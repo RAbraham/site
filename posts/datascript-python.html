@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2020-05-12">
+<meta name="description" content="DataScript is an immutable database for application state management in the browser">
+
+<title>site - DataScript. A modern datastore for the browser</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">site</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About me</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">DataScript. A modern datastore for the browser</h1>
+                  <div>
+        <div class="description">
+          DataScript is an immutable database for application state management in the browser
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">markdown</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 12, 2020</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#purpose." id="toc-purpose." class="nav-link active" data-scroll-target="#purpose.">Purpose.</a></li>
+  <li><a href="#datascriptand-datalog" id="toc-datascriptand-datalog" class="nav-link" data-scroll-target="#datascriptand-datalog">DataScript(and Datalog)</a>
+  <ul class="collapse">
+  <li><a href="#there-is-no-spoon-neo." id="toc-there-is-no-spoon-neo." class="nav-link" data-scroll-target="#there-is-no-spoon-neo.">There is no spoon, Neo.</a></li>
+  <li><a href="#mercylog-datascript" id="toc-mercylog-datascript" class="nav-link" data-scroll-target="#mercylog-datascript">Mercylog Datascript</a>
+  <ul class="collapse">
+  <li><a href="#mercylog-datascript-queries" id="toc-mercylog-datascript-queries" class="nav-link" data-scroll-target="#mercylog-datascript-queries">Mercylog-DataScript Queries</a></li>
+  <li><a href="#if-you-loved-the-above." id="toc-if-you-loved-the-above." class="nav-link" data-scroll-target="#if-you-loved-the-above.">If you loved the above.</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>This article was originally posted at <code>https://blog.rajivabraham.com/posts/datascript-python</code></p>
+<section id="purpose." class="level1">
+<h1>Purpose.</h1>
+<p>This blog article will: * give a brief introduction to a new way of managing state on the browser by leveraging a library called <a href="https://github.com/tonsky/datascript">DataScript</a>. * Though DataScript is a ClojureScript/JavaScript library, we will learn how to call it using <a href="https://blog.rajivabraham.com/posts/brython">Brython</a>, a Python implementation that runs on the browser. * sneak in a tutorial on <a href="https://github.com/RAbraham/mercylog-datascript">mercylog-datascript</a> which is a query composer library for DataScript.</p>
+</section>
+<section id="datascriptand-datalog" class="level1">
+<h1>DataScript(and Datalog)</h1>
+<p>How do you manage application state in the browser? I’m new to frontend development so I’m sure there are many solutions out there which I don’t know about. But let me ask the question from a different perspective. How would a backend developer manage state? She uses a database. She writes SQL queries. Then for the browser, can we use an in-memory datastore and write queries on it?</p>
+<p><code>DataScript</code> is one such in-memory datastore for the browser. One can create it during page load, insert, delete rows etc. and when the user closes the page, it’s gone. It’s very light and fast. Also, instead of SQL, it offers a query style called Datalog which is a declarative, logic based query language. I got interested in Datalog when I saw that applications written in its variants reduced the code size by 50% or more(<a href="https://dl.acm.org/doi/10.1145/1755913.1755937">Overlog</a>, <a href="https://storage.googleapis.com/pub-tools-public-publication-data/pdf/43462.pdf">Yedalog</a>). This is why I got interested in <code>DataScript</code> in the first place. I have written a brief introduction to the concepts <a href="https://blog.rajivabraham.com/posts/bashlog">here</a>. In short, It’s like SQL + Recursion.</p>
+<p>But Datalog is not the only reason to use DataScript. That would be like flying in the Boeing 747 for its in-flight entertainment. It has so many other cool features but that’s for another post. This post will focus on just the Datalog query interface for DataScript.</p>
+<p>Just to complicate things a bit, <code>DataScript</code> is actually a ClojureScript library which has a <code>JavaScript</code> interface too. So in all respects, you would use it cleanly in those languages. <em>But</em>, I’m interested in Python in the browser and therefore all the examples below will be in a Python implementation in the browser called <a href="https://brython.info/">Brython</a>. I have written a <a href="https://blog.rajivabraham.com/posts/brython">brief introduction</a> before:</p>
+<p>All the examples below are from the following github <a href="https://github.com/RAbraham/mercylog-datascript-client">repo</a>. NOTE: All the files mentioned below take some time to load the data.</p>
+<section id="there-is-no-spoon-neo." class="level2">
+<h2 class="anchored" data-anchor-id="there-is-no-spoon-neo.">There is no spoon, Neo.</h2>
+<p>Cough, before we move on, DataScript is different from your conventional SQL datastores. In conventional SQL databases, when we wish to implement an entity e.g <code>customer</code>, we first create a table schema <code>customer</code> with the <code>attributes</code>: <code>name</code> and <code>age</code> for e.g.</p>
+<pre><code>CREATE TABLE customer (
+    name varchar,
+    age int
+);
+</code></pre>
+<p>According to Datomic, the backend database which DataScript is an in-memory implementation of, such an approach is <a href="https://docs.datomic.com/on-prem/schema.html">rigid</a>. Hey, I sense it but not well enough to defend it. So, let’s not have twitter wars on that one… yet.</p>
+<p>DataScript eschews storing data as separate entities in separate tables(like <code>customer</code> or <code>person</code>). Instead, one can see DataScript as a store for <em>attributes</em> and its values only. So, DataScript prescribes that we only specify the schema for the attributes itself. E.g. <code>name</code> is <code>string</code>, <code>age</code> is <code>integer</code> but do not group them at all at design time before hand. Instead, the <em>application decides which attributes to group together for a particular instance of that entity</em>.</p>
+<p>In an extreme example to clarify the concepts, the application may decide to store just a customer’s name(Rajiv) and his eye color(black) and give the customer an id 1. For another customer, it may store her as id 3 and just store her age(40). Simplistically(and naively incorrect), you can see the database as a single god table with columns <code>entity_id</code>, <code>attribute</code>, <code>value</code> where each row can belong to a different <code>(entity_id, attribute)</code> composite key. E.g.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>entity_id</th>
+<th style="text-align: center;">attribute</th>
+<th style="text-align: right;">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">name</td>
+<td style="text-align: right;">Rajiv</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td style="text-align: center;">age</td>
+<td style="text-align: right;">40</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td style="text-align: center;">name</td>
+<td style="text-align: right;">Canada</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td style="text-align: center;">eye_color</td>
+<td style="text-align: right;">black</td>
+</tr>
+</tbody>
+</table>
+<p>What about the entity <code>2</code>? He/She is named Canada? Must be a cutie unlike the dull Rajiv. <em>But we don’t know, the application knows</em>. It may not represent a person at all! In this example, the pair (entity id=<code>2</code>, attribute=<code>name</code>) could be one attribute and value for an instance of the entity <code>country</code> e.g.&nbsp;Canada(<em>O Canada, our home and native land… True Patriot Love .. with your public healthcare you command!</em>). Before you panic and ditch Datomic/DataScript, in practice, the attribute names contain the entity name as well. So it’ll be “:customer/name” instead of “name” for Rajiv and “:country/name” instead of “name” for Canada. Or you could still leverage a common <code>name</code> attribute, your choice. And there is better support for ids than the pitiful example I’m giving here. Also, Imposter Alert, I’m not an expert by any means. I’m learning by doing :). That’s my EULA. Please do check out the design principles behind Datomic/DataScript. I think Datomic is a masterpiece in database engineering.</p>
+<p>Let’s show you how to add data. For e.g., we can add two dictionaries(Igor and Ivan) to the database.</p>
+<pre><code>db = datascript.empty_db()
+db1 = datascript.db_with(db, [{":db/id": 1,
+                                "name": "Ivan",
+                                "age": 17},
+                                {":db/id": 2,
+                                "name": "Igor",
+                                "age": 35}])</code></pre>
+<p>You’ll notice that datascript takes a database (<code>db</code>) and adds data to it and returns a new database <code>db1</code>. This is because databases in DataScript are immutable. Once created, you can’t change it. This makes debugging and reasoning about the code using a database easier. I’ve written a bit about the general concept of immutability <a href="https://blog.rajivabraham.com/posts/pyrsistent">here</a></p>
+<p>For each dictionary, DataScript will add two rows(one for name and another for age) in the single god table. The way DataScript keeps track is with the entity id i.e.&nbsp;<code>:db/id</code> attribute name which is a reserved attribute name in DataScript.</p>
+<p>So this may be represented in the god table like:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>entity_id</th>
+<th style="text-align: center;">attribute</th>
+<th style="text-align: right;">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">name</td>
+<td style="text-align: right;">Ivan</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td style="text-align: center;">age</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td style="text-align: center;">name</td>
+<td style="text-align: right;">Igor</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">age</td>
+<td style="text-align: right;">35</td>
+</tr>
+</tbody>
+</table>
+<p>Finally, the query. The query follows the Clojure style of a mixed list. If we want to know the age of the entity whose name is <code>Igor</code>, the query would look like <code>[:find ?a :where [?e "name" "Igor"] [?e "age" ?a]]</code>. The variables with a question mark are called logic variables. If you are familiar with inner joins in SQL, it’s very similar. We are saying that if there is some <code>:db/id</code> (i.e.&nbsp;<code>?e</code>) whose name is <code>Igor</code>, for that value of <code>?e</code>(i.e <code>2</code>) find a relation for <code>age</code> (i.e.&nbsp;<code>[?e "age" ?a]</code>) and return his age(i.e <code>?a</code>). We should get back <code>35</code>. The query and the call to the database is:</p>
+<pre><code>result = datascript.q('[:find ?a :where [?e "name" "Igor"] [?e "age" ?a]]', db1)</code></pre>
+<p>The full example is below:</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;script type="text/javascript" src="brython.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="brython_stdlib.js"&gt;&lt;/script&gt;
+    &lt;script src="https://github.com/tonsky/datascript/releases/download/0.18.10/datascript-0.18.10.min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body onload="brython(1)"&gt;
+&lt;script type="text/python"&gt;
+from browser import window, alert
+datascript = window.datascript
+
+db = datascript.empty_db()
+db1 = datascript.db_with(db, [{":db/id": 1,
+                                "name": "Ivan",
+                                "age": 17},
+                                {":db/id": 2,
+                                "name": "Igor",
+                                "age": 35}])
+result = datascript.q('[:find ?a :where [?e "name" "Igor"] [?e "age" ?a]]', db1)
+alert(result)
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+<p>Other notes for the above example: * We load the <code>Brython</code> libraries: <code>brython.js</code> and <code>brython_stdlib.js</code> to run Python in the browser. * We load the <code>datascript</code> library from GitHub using the <code>script</code> tag . Brython will automatically create a reference for <code>datascript</code> under the <code>window</code> object. So we can refer to the module using <code>window.datascript</code> * When you open <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/igor-just-datascript.html">igor-just-datascript.html</a> in a browser, it should return [[35]]. The return value is always a list.</p>
+</section>
+<section id="mercylog-datascript" class="level2">
+<h2 class="anchored" data-anchor-id="mercylog-datascript">Mercylog Datascript</h2>
+<p>Now you could happily continue and query the database with strings like <code>[:find ?a :where [?e "name" "Igor"] [?e "age" ?a]]</code>. Personally, I find writing code as strings works for simple queries. But it’s not easily composable and reusable. So I wrote a Brython library called <a href="https://github.com/RAbraham/mercylog-datascript">mercylog-datascript</a> which allows us to use Python to construct the queries. So the same query in <code>mercylog-datascript</code> becomes</p>
+<pre><code># The original datascript style as str_query
+str_query = '[:find ?a :where [?e "name" "Igor"] [?e "age" ?a]]'
+
+# mercylog-datascript style
+from mercylog_datascript import DataScriptV1
+m = DataScriptV1()
+A, E = m.variables('a', 'e')
+query = m.query(find=[A], where=[[E, "name", "Igor"], [E, "age", A]])
+assert str_query == query.code()</code></pre>
+<p>Granted, it’s more code than a simple string but I think when the queries become complex and begin to have reusable parts, this style may start paying off.</p>
+<p>All you need to access the <code>mercylog-datascript</code> library is add the following script tag:</p>
+<pre><code>&lt;script src="https://github.com/RAbraham/mercylog-datascript/releases/download/v0.1.4/mercylog_datascript.brython.js"&gt;&lt;/script&gt;`</code></pre>
+<p>The full script is at <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/igor-mercylog-datascript.html">igor-mercylog-datascript.html</a></p>
+<section id="mercylog-datascript-queries" class="level3">
+<h3 class="anchored" data-anchor-id="mercylog-datascript-queries">Mercylog-DataScript Queries</h3>
+<p>Now that you have seen an example, let me show you the current query feature set with a sample dataset of actors, directors and movies. The full dataset is <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/data.json">here</a>. Here is an elided subset.</p>
+<pre><code>[
+ {":db/id":  100,
+  ":person/name": "James Cameron",
+  ":person/born": "1954-08-16"},
+
+ {":db/id":  131,
+  ":person/name": "Charles Napier",
+  ":person/born": "1936-04-12",
+  ":person/death": "2011-10-05"},
+  ....
+
+  {":db/id":  200,
+  ":movie/title": "The Terminator",
+  ":movie/year":  1984,
+  ":movie/director":  100,
+  ":movie/cast":  [101,
+               102,
+               103],
+  ":movie/sequel":  [207]},
+
+ {":db/id":  201,
+  ":movie/title": "First Blood",
+  ":movie/year":  1982,
+  ":movie/director":  104,
+  ":movie/cast":  [105,
+               106,
+               107],
+  ":movie/sequel":  [209]},
+....
+
+]</code></pre>
+<p>Here is the code to access the raw dataset and a simple pattern access as above with the Igor example. The code is <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/simple_data_pattern.html">here</a>. Below we want to know the birthdate of <code>Linda Hamilton</code> and it will return <code>[['1956-09-26']]</code></p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;script type="text/javascript" src="brython.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="brython_stdlib.js"&gt;&lt;/script&gt;
+    &lt;script src="https://github.com/RAbraham/mercylog-datascript/releases/download/v0.1.4/mercylog_datascript.brython.js"&gt;&lt;/script&gt;
+
+    &lt;script src="https://github.com/tonsky/datascript/releases/download/0.18.10/datascript-0.18.10.min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body onload="brython(1)"&gt;
+&lt;script type="text/python"&gt;
+from browser import window, alert, console
+datascript = window.datascript
+
+from mercylog_datascript import DataScriptV1
+m = DataScriptV1()
+import urllib.request, json
+data_file_url = 'https://raw.githubusercontent.com/RAbraham/mercylog-datascript-client/master/data.json'
+console.log('Loading File')
+with urllib.request.urlopen(data_file_url) as url:
+    result = json.loads(url.read())
+console.log('End loading file')
+
+db = datascript.empty_db()
+db2 = datascript.db_with(db, result)
+
+e, name, born = m.variables('e', 'name', 'born')
+
+query = m.query(find=[born], where=[[e, ":person/name", "Linda Hamilton"], [e, ":person/born", born]])
+q = query.code()
+result = datascript.q(q, db2)
+alert(result)  # [['1956-09-26']]
+
+
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+<p>Henceforth, I’ll only focus on the <code>mercylog-datascript</code> query builder and how it supports DataScript.</p>
+<p>Let’s start with something simple. How do we just get the id(i.e <code>:db/id</code>) of a person? As shown in <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/entity.html">entity.html</a>, the following query returns <code>[[102]]</code> for <code>Linda Hamilton</code>.</p>
+<pre><code>e = m.variables('e')
+query = m.query(find=[e], where=[[e, ":person/name", "Linda Hamilton"]])</code></pre>
+<p>That’s great, but sometimes you want to create a parameterized query i.e.&nbsp;a query that can be used with different values. Let’s generalize the query above and then we can use it for different values. We do this by adding a <code>parameters</code> key to our <code>query</code> function.</p>
+<p>In <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/parameterized_queries.html">parameterized_queries.html</a>, you’ll see:</p>
+<pre><code># [:find ?e :in $ ?name :where [?e ":person/name" ?name]]
+e, name = m.variables('e', 'name')
+query = m.query(find=[e], parameters=[name], where=[[e, ":person/name", name]])
+q = query.code()
+result1 = datascript.q(q, db2, 'Linda Hamilton')
+result2 = datascript.q(q, db2, 'Sylvester Stallone')</code></pre>
+<p>As you can see above, the same query can be used to query <code>Linda Hamilton</code> and <code>Sylvester Stallone</code>.</p>
+<p>Sometimes, you don’t care about the entity, when doing a search. For e.g, you just want all the movie titles. In that case, <code>mercylog-datascript</code> provides the <code>m._</code> variable.</p>
+<p>In <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/underscore.html">underscore.html</a>, you’ll find:</p>
+<pre><code># [:find ?title :where [_ ":movie/title" ?title]]
+title = m.variables('title')
+query = m.query(find=[title], where=[[m._, ":movie/title", title]])</code></pre>
+<p>This would return</p>
+<pre><code>[['First Blood'], ['Terminator 2: Judgment Day'], ....  ['Terminator 3: Rise of the Machines']]</code></pre>
+<p>In <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/attr.html">attr.html</a>, we show how to find out the attributes which are commonly associated with a particular attribute(i.e.&nbsp;“:person/name”). To reiterate, as DataScript does not have a fixed schema, it’s possible for a customer record c1 to only have a name but another record c2 to have a name and age.</p>
+<pre><code># DataScript Query: [:find ?attribute :where [?person ":person/name"] [?person ?attribute]]
+person, attribute = m.variables('person', 'attribute')
+query = m.query(find=[attribute],
+                where=[[person, ":person/name"],
+                       [person, attribute]])
+
+q = query.code()
+result = datascript.q(q, db2) # [[':person/born'], [':person/name'], [':person/death']]</code></pre>
+<p>Above, we find out that an entity which has an attribute <code>:person/name</code> can also have one or more of <code>[[':person/born'], [':person/name'], [':person/death']]</code>. The slow reader who didn’t try to read this in the elevator may have noticed that previously our list in the <code>where</code> clause were of size three but when we do such kind of meta searches, we can just pass lists of size 2(e.g.&nbsp;<code>[person, attribute]</code>)</p>
+<p>Now, you sigh and say, this is all good but no language is a language unless it allows you to create functions. In <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/transformation.html">transformation.html</a>, we see an example of passing a user defined function(<code>get_age</code>) to be executed against the database. In the code snippet below, notice <code>[get_age(born), age]</code>. You could see this as <code>age = get_age(born)</code> for different values of <code>born</code> and you could reuse that in your query. In our case, we just ask for it directly in <code>find</code>.<br>
+Since it’s user defined, we add <code>get_age</code> to the <code>parameters</code> argument for <code>query</code> as well and pass <code>get_age.function</code> to the DataScript query engine as well.</p>
+<pre><code># DataScript Query:[:find ?age :in $ ?get_age ?name :where [?p ":person/name" ?name] [?p ":person/born" ?born] [(?get_age ?born) ?age]]
+from datetime import datetime
+current_year = int(datetime.today().strftime('%Y'))
+get_age = m.function('get_age', lambda born: (current_year - int(born.split('-')[0])) )
+
+born, p, age, name = m.variables('born', 'p', 'age', 'name')
+query = m.query(find=[name, age],
+                parameters=[get_age, name],
+                where=[[p, ":person/name", name],
+                       [p, ":person/born", born],
+                       [get_age(born), age]])
+
+q = query.code()
+result = datascript.q(q, db2, get_age.function, "Richard Crenna")
+alert(result) #[['Richard Crenna', 94]]
+
+</code></pre>
+<p>Ok, you say this is simple stuff, yawn, what about SQL like aggregate functions? DataScript has you covered. In <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/aggregates.html">aggregates.html</a>, we show the use of inbuilt functions of DataScript i.e.&nbsp;<code>agg.max(age)</code>. As a bonus, we now show how to combine that with a user defined function(<code>get_age</code>).</p>
+<pre><code># DataScript Query:[:find (max ?age) :in $ ?get_age :where [?p ":person/name" ?name] [?p ":person/born" ?born] [(?get_age ?born) ?age]]
+from datetime import datetime
+current_year = int(datetime.today().strftime('%Y'))
+get_age = m.function('get_age', lambda born: (current_year - int(born.split('-')[0])) )
+agg = m.agg
+born, p, age, name = m.variables('born', 'p', 'age', 'name')
+query = m.query(find=[agg.max(age)],
+                parameters=[get_age],
+                where=[[p, ":person/name", name],
+                       [p, ":person/born", born],
+                       [get_age(born), age]])
+
+q = query.code()
+result = datascript.q(q, db2, get_age.function)
+alert(result) # [[94]]
+</code></pre>
+<p>What about SQL where like clauses? We have filters in DataScript too. It’s basically a user defined function in it’s own row. For e.g, in <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/predicate2.html">predicate2.html</a>(because getting <code>predicate1.html</code> to work made me cry), I’m going to make a simple filter function called <code>born_before_1950</code> to filter out the wiser actors.</p>
+<pre><code># DataScript Query: [:find ?person :in $ ?born_before_1950 :where [?person ":person/born" ?birth_date] [(?born_before_1950 ?birth_date)]]
+person, birth_date = m.variables('person', 'birth_date')
+born_func = lambda x: int(x.split('-')[0]) &lt; 1950
+born_before_1950 = m.function('born_before_1950', born_func)
+query = m.query(find=[person],
+                parameters=[born_before_1950],
+                where=[[person, ":person/born", birth_date],
+                       [born_before_1950(birth_date)]])
+q = query.code()
+result = datascript.q(q, db2, born_before_1950.function)
+alert(result) # [[148], [119], [146], [105], [136], [116], [135], [145], [111], [114], [118], [115], [147], [104], [139], [110], [133], [131], [140], [101], [123], [142], [137], [138], [106], [107], [113], [124], [130]]
+ </code></pre>
+<p>We can leverage ClojureScript inbuilt functions too. As seen in <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/inbuilt_function3.html">inbuilt_function3.html</a>(why <code>3</code>?, you guessed it ;)), we can call inbuilt functions like <code>&lt;</code>. You still leverage the <code>m.function</code> method but since you don’t pass your own user defined function, <code>mercylog-datascript</code> will assume that you are trying to call an inbuilt function. You can call that convenient or over smart, only time will tell.</p>
+<pre><code># DataScript Query: [:find ?title :where [?movie ":movie/title" ?title] [?movie ":movie/year" ?year] [(&lt; ?year 1984)]]
+title, movie, year = m.variables('title', 'movie', 'year')
+lt = m.function("&lt;")
+query = m.query(find=[title],
+                where=[[movie, ":movie/title", title],
+                       [movie, ":movie/year", year],
+                       [lt(year, 1984)]])
+
+q = query.code()
+alert(q)
+result = datascript.q(q, db2)
+alert(result) # [['First Blood'], ['Alien'], ['Mad Max'], ['Mad Max 2']
+</code></pre>
+<p>But most of the fun happens when we link different sources of data together to make money. For e.g.&nbsp;you may call a service which gives you the box office numbers for popular movies and you want to link that with the data in your database and find out the corresponding directors.</p>
+<p>This is similar to an inner join in SQL between two tables but in this case, one side is a ‘table’ in DataScript and the other side is your in-memory structure which you obtain after calling the API for the service. Suppose you store the result of the API call in an in-memory list(<code>title_box_office_pairs</code> below). You need to tell DataScript about it’s structure. So you specify it in the <code>parameters</code> argument as <code>m.collection([title, box_office])</code> and then later pass <code>title_box_office_pairs</code> to <code>datascript.q()</code> later. Then you could use the logic variable <code>title</code> and use that to link to the data in the DataScript store. Code snippet below and full code <a href="https://github.com/RAbraham/mercylog-datascript-client/blob/master/parameterized_queries_relations.html">here</a>,</p>
+<pre><code># DataScript query: [:find ?director ?box_office :in $ [[?title ?box_office]] :where [?p ":person/name" ?director] [?movie ":movie/director" ?p] [?movie ":movie/title" ?title]]
+
+movie, p, title, box_office, director = m.variables('movie', 'p', 'title', 'box_office', 'director')
+# title_box_office_pairs below could have been obtained from some api call.
+title_box_office_pairs = [
+ ["Die Hard", 140700000],
+ ["Alien", 104931801],
+ ["Lethal Weapon", 120207127],
+ ["Commando", 57491000],
+]
+query = m.query(find=[director,
+                      box_office],
+                parameters=[m.collection([title, box_office])],
+                where=[[p, ":person/name", director],
+                       [movie, ":movie/director", p],
+                       [movie, ":movie/title", title]])
+
+q = query.code()
+result = datascript.q(q, db2, title_box_office_pairs)
+alert(result) # [['Richard Donner', 120207127], ['Mark L. Lester', 57491000], ['John McTiernan', 140700000], ['Ridley Scott', 104931801]]
+</code></pre>
+<p>Finally, we can define rules. Let’s say we want to make a rule: Two people are mates if their names match(hey, that’s a good reason to be mates, no?). In Datalog, one would write it like</p>
+<pre><code>Mate(E1, E2) &lt;= Name(N, E1), Name(N, E2)</code></pre>
+<p>i.e.&nbsp;any person <code>E1</code> is a mate of any person <code>E2</code> if they both have the name <code>N</code>. Again <code>N</code> here is a logic variable which could represent all the names in the database. In mercylog-datascript, you would write the above as:</p>
+<pre><code>e1, e2, n = m.variables('e1', 'e2', 'n')
+
+mate = m.relation('mate')
+r = m.rule(mate(e1, e2), [[e1, "name", n],
+                          [e2, "name", n]])</code></pre>
+<p>A complete code listing is below. We also show to add a <code>m.function</code> to choose those rows where <code>e1</code> has a bigger id than <code>e2</code>. I know! It does not make sense but I’ve been labouring on this post for three weeks and it’s time to wrap up :P:</p>
+<p>NOTE: There is some boilerplate code for now to send the rule as a parameter to the query:<code>rule_code = '[' + r.code() + ']'</code>. I’ll look into improving it if a thousand of you star this project on Github(Yeah, ain’t going to happen, I know :))</p>
+<pre><code>from mercylog_datascript import DataScriptV1
+m = DataScriptV1()
+db = datascript.empty_db()
+
+db2 = datascript.db_with(datascript.empty_db({"age": {":db/index": True}}),
+                 [{ ":db/id": 1, "name": "Ivan", "age": 15 },
+                  { ":db/id": 2, "name": "Petr", "age": 37 },
+                  { ":db/id": 3, "name": "Ivan", "age": 37 }]);
+
+e1, e2, p, title, n = m.variables('e1', 'e2', 'p', 'title', 'n')
+mate = m.relation('mate')
+gt = m.function('&lt;')
+query = m.query(find=[e1, e2],
+                where=[mate(e1, e2),
+                       [gt(e1, e2)]])
+q = query.code()
+alert(q)
+
+r = m.rule(mate(e1, e2), [[e1, "name", n],
+                          [e2, "name", n]])
+rule_code = '[' + r.code() + ']'
+alert(rule_code)
+result = datascript.q(q, db2, rule_code)
+
+alert(result) # [[1,3]]
+</code></pre>
+<p>That’s about it. If you came so far, I love you. I really do. Call me.</p>
+</section>
+<section id="if-you-loved-the-above." class="level3">
+<h3 class="anchored" data-anchor-id="if-you-loved-the-above.">If you loved the above.</h3>
+<ul>
+<li>DataScript has two more APIs in addition to the Datalog API:
+<ul>
+<li>Entity API: I think this is similar in concept to graph database like query languages. I leave it to the reader to investigate</li>
+<li>Pull API: Similar to GraphQL</li>
+</ul></li>
+<li>If you want to learn about more about the DataScript syntax, check out this <a href="http://www.learndatalogtoday.org/">site</a></li>
+<li>The Datomic Data Model which DataScript is inspired about is mentioned <a href="https://docs.datomic.com/cloud/whatis/data-model.html">here</a></li>
+</ul>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

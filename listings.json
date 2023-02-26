@@ -4,7 +4,14 @@
     "items": [
       "/posts/2021-12-13-tabbyql-design.html",
       "/posts/2021-10-29-dsl-datalog-ohm-glue.html",
-      "/posts/2020-02-16-introducing-mercylog.html"
+      "/posts/the-essence-of-datalog.html",
+      "/posts/datascript-python.html",
+      "/posts/brython.html",
+      "/posts/purescript-twitter.html",
+      "/posts/purescript-serverless.html",
+      "/posts/fp-pyrsistent.html",
+      "/posts/introducing-mercylog.html",
+      "/posts/thampi-introduction.html"
     ]
   }
 ]

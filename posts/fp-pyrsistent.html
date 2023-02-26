@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2020-03-22">
+<meta name="description" content="Use Pyrsistent to create immutable values in Python for better code maintenance.">
+
+<title>site - Reading code easily with immutable values(Pyrsistent).</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">site</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About me</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Reading code easily with immutable values(Pyrsistent).</h1>
+                  <div>
+        <div class="description">
+          Use Pyrsistent to create immutable values in Python for better code maintenance.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">markdown</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 22, 2020</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#on-speed-and-memory" id="toc-on-speed-and-memory" class="nav-link active" data-scroll-target="#on-speed-and-memory">On Speed and Memory</a></li>
+  <li><a href="#updating-dictionaries" id="toc-updating-dictionaries" class="nav-link" data-scroll-target="#updating-dictionaries">Updating dictionaries</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="tldr" class="level6">
+<h6 class="anchored" data-anchor-id="tldr">TLDR:</h6>
+<p>Use data structures that don’t change once created(using Pyrsistent) to make it easy to understand and maintain code.</p>
+</section>
+<section id="purpose." class="level4">
+<h4 class="anchored" data-anchor-id="purpose.">Purpose.</h4>
+<p>When a data structure(e.g.&nbsp;dict) once created, does not change, it allows us to read code with more confidence.</p>
+<p>For e.g.&nbsp;Let’s say you have a <code>customer</code> variable in your code and you are tracking it’s value by reading the code. What do you reason is the value of <code>customer</code> below?</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>customer <span class="op">=</span> <span class="bu">dict</span>(name<span class="op">=</span><span class="st">"Rajiv"</span>, age<span class="op">=</span><span class="dv">40</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>some_function(customer)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(customer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the above code, we can’t say. In Python, for most default data structures like <code>dict</code>, it is possible that <code>some_function</code> could have changed the value of <code>customer</code>. So, we have to dig in and read the code of <code>some_function</code> to be fully sure. If the code of <code>some_function</code> was below:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> some_function(a):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    a1 <span class="op">=</span> a</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    a1[<span class="st">'name'</span>] <span class="op">=</span> <span class="st">'NewRajiv'</span> <span class="co"># Changing the values. blasphemy</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># do something with a1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>then <code>print(customer)</code> would display <code>{'name': 'NewRajiv', 'age': 40}</code>.</p>
+<p>If you are lucky, <code>some_function</code> does not pass it forward to other functions! Or else, you would have to dig in and read those functions too :). Now that would suck. Unless, it is the intention that the <code>customer</code> field should be mutated but in most cases, one does not expect it to be so(in other languages,naming conventions are used to indicate if that is the case). A knowledgeable programmer may make a copy(via the <code>copy.deepcopy()</code>) and work on the copy to prevent her code from affecting the client code but I have not been that knowledgeable programmer :)</p>
+<p>What if we could use a data structure that once created, cannot be changed i.e.&nbsp;it is immutable. Let’s check out a library called <a href="https://github.com/tobgu/pyrsistent">pyrsistent</a> that gives us such data structures.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyrsistent <span class="im">import</span> m <span class="co"># m is like a dictionary</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>customer1 <span class="op">=</span> m(name<span class="op">=</span><span class="st">'Rajiv'</span>, age<span class="op">=</span><span class="dv">40</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>customer2 <span class="op">=</span> customer1.<span class="bu">set</span>(name<span class="op">=</span><span class="st">'NewRajiv'</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(customer1) <span class="co"># pmap({'age': 40, 'name': 'Rajiv'})</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(customer2) <span class="co"># pmap({'age': 40, 'name': 'NewRajiv'})</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When we specify a different value(‘NewRajiv’), a copy is created with that new value and assigned to <code>customer2</code>. <code>customer1</code> still retains the value it was first assigned. Now, let’s go back to our previous code example and modify it a bit for <code>pyrsistent</code></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyrsistent <span class="im">import</span> m <span class="co"># m is like a dictionary</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> some_function(a):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    a1 <span class="op">=</span> a.<span class="bu">set</span>(<span class="st">'name'</span>, <span class="st">'NewRajiv'</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># do something with a1 </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>customer <span class="op">=</span> m(name<span class="op">=</span><span class="st">"Rajiv"</span>, age<span class="op">=</span><span class="dv">40</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>some_function(customer)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(customer)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>print(customer)</code> would display <code>{'name': 'Rajiv', 'age': 40}</code>, the value set in our code. So, we can safely reason about our code and what it’s doing without worrying about it changing inside <code>some_function</code>. We don’t have to even look into <code>some_function</code> in this case. Trust me, when you can’t run that snippet of code to see what the actual values are, this feature makes life so easy :).</p>
+<p><code>pyrsistent</code> also has support for other common data structures(i.e.&nbsp;lists, sets) and much much more. Most of these <code>pyrsistent</code> data structures are drop in replacements for their Python counterparts when it comes to accessing the data.</p>
+<p>From the pyrsistent docs:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyrsistent <span class="im">import</span> v  <span class="co"># like a list</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> v(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> a.append(<span class="dv">4</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(b[<span class="dv">1</span>])  <span class="co"># 2</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(b[<span class="dv">1</span>:<span class="dv">3</span>])  <span class="co"># pvector([2, 3])</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([<span class="dv">2</span> <span class="op">*</span> x <span class="cf">for</span> x <span class="kw">in</span> b])  <span class="co"># [2, 4, 6, 8]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="on-speed-and-memory" class="level3">
+<h3 class="anchored" data-anchor-id="on-speed-and-memory">On Speed and Memory</h3>
+<p>I simplified(ok, I lied) when I said that <code>pyrsistent</code> makes a copy of the data structure. Such a practice would be a waste of memory and time if we copy over every huge data structure. <code>pyrsistent</code> mitigates that to a great extent by not just blindly copying data structures and then making the modifications. It tries to be intelligent by <code>sharing the common parts</code> between a original data structure and the new modified copy to save on memory and time.</p>
+<p>Let’s take an example(Credit: Wikipedia: Persistent Data Structures). Ah, you now are exposed to what this is really called. This concept is called <code>persistent data structures</code> or <code>functional data structures</code>.</p>
+<p>NOTE: The below example is just to explain the concepts and such a binary search tree is not part of <code>pyrsistent</code>.</p>
+<p>Let’s say you had a binary search tree(<code>xs</code>) which was a persistent data structure:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figure class="figure">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Purely_functional_tree_before.svg/696px-Purely_functional_tree_before.svg.png" title="Binary Search Tree" class="img-fluid figure-img">
+</figure>
+<p></p><figcaption class="figure-caption">alt text</figcaption><p></p>
+</figure>
+</div>
+<p>Now if you added a node <code>e</code> to that data structure, e.g.&nbsp;<code>ys = insertNode(xs, e)</code> A naive implementation would copy the data structure and then insert <code>e</code> at the appropriate location. In a persistent data structure approach, it would be:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figure class="figure">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Purely_functional_tree_after.svg/876px-Purely_functional_tree_after.svg.png" title="Persistent Binary Search Tree" class="img-fluid figure-img">
+</figure>
+<p></p><figcaption class="figure-caption">alt text</figcaption><p></p>
+</figure>
+</div>
+<p>Since <code>e</code> falls into the right side of the tree(i.e.&nbsp;the tree with <code>g</code> as the root), the tree with root <code>b</code> is not affected and hence can be reused. You can see a arrow from <code>d'</code> to <code>b</code> indicating that.</p>
+<p>This reuse saves memory space, and saves time not done copying as it merely uses pointers to refer to the unchanged data.</p>
+<p>Note: just because a data structure is being reused does not mean modifications to one can affect another. They are immutable and hence cannot be modified. If you do modify, a new structure is created like above.</p>
+<p>Note on Note: <code>pyrsistent</code> tries to be as fast as possible and has comparable speeds to the norm for most cases. The complexity of most operations are well described in their docs. ### Nested Transformations</p>
+<p>What if we have to update a nested value in a data structure while maintaining immutability. <code>pyrsistent</code> has a method <code>transform</code> for that. How I would normally do it</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> copy</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>m4 <span class="op">=</span> <span class="bu">dict</span>(a<span class="op">=</span><span class="dv">1</span>, b<span class="op">=</span><span class="dv">6</span>, c<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">2</span>])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># I want to update c[1] to 17</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>m4_new <span class="op">=</span> copy.deepcopy(m4) </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>m4_new[<span class="st">'c'</span>][<span class="dv">1</span>] <span class="op">=</span> <span class="dv">17</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>From their docs,</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyrsistent <span class="im">import</span> m  <span class="co"># m is like a dictionary</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyrsistent <span class="im">import</span> v <span class="co"># m is like a list</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>m4 <span class="op">=</span> m(a<span class="op">=</span><span class="dv">5</span>, b<span class="op">=</span><span class="dv">6</span>, c<span class="op">=</span>v(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>m4_new <span class="op">=</span> m4.transform((<span class="st">'c'</span>, <span class="dv">1</span>), <span class="dv">17</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(m4_new) <span class="co"># pmap({'a': 5, 'c': pvector([1, 17]), 'b': 6})</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="updating-dictionaries" class="level3">
+<h3 class="anchored" data-anchor-id="updating-dictionaries">Updating dictionaries</h3>
+<p>One thing I do very often is merging dictionaries. For e.g., I may have to construct my configuration taking the the following sources with the earliest being the highest priority. * Environment variables * File configuration * Default configuration</p>
+<p>How I would normally do it.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>default_conf <span class="op">=</span> <span class="bu">dict</span>(database_url<span class="op">=</span><span class="st">'dev_url'</span>, user<span class="op">=</span><span class="st">'postgres'</span>, port<span class="op">=</span><span class="dv">5432</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Imagine file_conf below was extracted from a file</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>file_conf <span class="op">=</span> <span class="bu">dict</span>(user<span class="op">=</span><span class="st">'test_user'</span>, port<span class="op">=</span><span class="dv">5433</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Imagine env_conf below was constructed from environment variables</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>environment_conf <span class="op">=</span> <span class="bu">dict</span>(database_url<span class="op">=</span><span class="st">'test_url'</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>final_conf <span class="op">=</span> {<span class="op">**</span>default_conf, <span class="op">**</span>file_conf, <span class="op">**</span>environment_conf}</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(final_conf) <span class="co"># {'database_url': 'test_url', 'user': 'test_user', 'port': 5433}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That’s great for 99% of the cases I would think :). But for the sake of discussion, perhaps if you had HUGE dictionaries(e.g.&nbsp;merging all the data you scrapped illegally from some website ;) ), that would be some duplication of data in memory. In <code>pyrsistent</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyrsistent <span class="im">import</span> m</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>default_conf <span class="op">=</span> m(database_url<span class="op">=</span><span class="st">'dev_url'</span>, user<span class="op">=</span><span class="st">'postgres'</span>, port<span class="op">=</span><span class="dv">5432</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Imagine file_conf below was extracted from a file</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>file_conf <span class="op">=</span> m(user<span class="op">=</span><span class="st">'test_user'</span>, port<span class="op">=</span><span class="dv">5433</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Imagine env_conf below was constructed from environment variables</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>environment_conf <span class="op">=</span> m(database_url<span class="op">=</span><span class="st">'test_url'</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>final_conf <span class="op">=</span> default_conf <span class="op">+</span> file_conf <span class="op">+</span> environment_conf</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(final_conf) <span class="co"># pmap({'database_url': 'test_url', 'user': 'test_user', 'port': 5433})</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>I hope this is enough to get you started in a better coding experience :). There are many other wonderful features in <code>pyrsistent</code> like having the above behaviour for records(<code>PRrecord</code>) and clases(<code>PClass</code>) and many more advanced features. I’ll leave that for another post.</p>
+<p>So head out to <a href="https://github.com/tobgu/pyrsistent">pyrsistent</a> and check it out. And if you like it, don’t forget to star! It’s a wonderful piece of engineering whose authors that we should applaud and support.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

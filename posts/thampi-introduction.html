@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2018-12-01">
+<meta name="description" content="Thampi. A Serverless Machine Learning Prediction System.">
+
+<title>site - Thampi. A Serverless Machine Learning Prediction System.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">site</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About me</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Thampi. A Serverless Machine Learning Prediction System.</h1>
+                  <div>
+        <div class="description">
+          Thampi. A Serverless Machine Learning Prediction System.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">markdown</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">December 1, 2018</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#tldr" id="toc-tldr" class="nav-link active" data-scroll-target="#tldr">TL;DR</a>
+  <ul class="collapse">
+  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">Motivation</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  </ul></li>
+  <li><a href="#welcome-to-thampi" id="toc-welcome-to-thampi" class="nav-link" data-scroll-target="#welcome-to-thampi">Welcome to Thampi!</a>
+  <ul class="collapse">
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  <li><a href="#alternatives" id="toc-alternatives" class="nav-link" data-scroll-target="#alternatives">Alternatives</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="tldr" class="level2">
+<h2 class="anchored" data-anchor-id="tldr">TL;DR</h2>
+<p><a href="https://thampi.readthedocs.io/en/latest/">Thampi</a> takes care of the DevOps work for machine learning prediction systems.</p>
+<section id="motivation" class="level3">
+<h3 class="anchored" data-anchor-id="motivation">Motivation</h3>
+<p>Data scientists(most of us, actually) want to focus on training their models. We just want the banana but find an entire gorilla holding on to it. <strong>DevOps</strong>. <em>Our models are useless unless they are deployed to production</em>. Building prediction servers is hard and often fledgling data science teams(mostly fledgling data science person) have to grapple with so many difficult questions.</p>
+<ul>
+<li>Cloud or On Premise?</li>
+<li>How to use Docker?</li>
+<li>How do I create a web server?</li>
+<li>What about scaling and server failures?</li>
+<li>I use Mac but we have to create the server in Linux?</li>
+<li>Security updates, OS patches etc.</li>
+<li>Kubernetes? <em>Ahhh… just shoot me</em>.</li>
+</ul>
+</section>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p><a href="https://thampi.readthedocs.io/en/latest/">Thampi</a> is an attempt to take care of the DevOps work required for prediction systems. With Thampi, you have:</p>
+<ul>
+<li><em>Minimal Devops</em>. With a single command, create a web server that scales, is fault tolerant and zero maintenance(courtesy <a href="https://aws.amazon.com/lambda/">AWS Lambda</a> and <a href="https://github.com/Miserlou/Zappa">Zappa</a>).</li>
+<li>Focus on your model. Work in Python to train your model. Then wrap your model in a class which inherits from <code>thampi.Model</code> and Thampi takes care of the rest.</li>
+<li>Pip and restricted Conda support.</li>
+<li><strong>Work on any platform</strong>*. Work on Mac(technically possible on other platforms but untested) and still deploy to AWS Lambda(which is Linux). As you know, if one’s working on Mac, one can’t just upload the machine learning libraries(e.g.&nbsp;scikit-learn) to a Linux server. That’s because most machine learning libraries, for performance reasons, are written in C and these C extensions are compiled to OS specific binaries.</li>
+<li>Thampi alleviates this by using Docker underneath so that you can work on a Mac(or Windows?). When serving the model, it recreates your machine learning project in the docker image(which is Linux) and compiles all the C libraries(e.g.&nbsp;scikit-learn) for you to Linux binaries, which is then uploaded to AWS Lambda.</li>
+</ul>
+</section>
+<section id="example" class="level3">
+<h3 class="anchored" data-anchor-id="example">Example</h3>
+<p>Let’s use the Iris dataset provided within scikit-learn. Let’s create a new project <code>myproject</code>. We’ll use <code>scikit-learn</code> as an example but you could use any framework.</p>
+<section id="setuppip" class="level4">
+<h4 class="anchored" data-anchor-id="setuppip">Setup(Pip)</h4>
+<p>```shell script mkdir myproject &amp;&amp; cd myproject virtualenv -p python3 venv source ./venv/bin/activate pip install thampi pip install scikit-learn pip install numpy pip install scipy pip freeze &gt; requirements.txt</p>
+<pre><code>
+#### Or … Setup(Conda)
+
+Note: This is one way of creating a conda environment. Please use the conventional way if you are comfortable in that style.
+```shell script
+mkdir myproject &amp;&amp; cd myproject
+# Create a  conda environment inside the directory myproject
+conda create --prefix=venv python=3.6.7
+pip install thampi
+pip install scikit-learn
+pip install numpy
+pip install scipy
+</code></pre>
+<p><em>IMPORTANT</em>: <code>thampi</code> only supports conda requirements files <a href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#create-env-file-manually">crafted by hand</a>. So, let’s manually create a requirements file with the above dependencies as shown below and save it as <code>requirements.txt</code>. The versions will change but you get the idea.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> thampi-tutorial</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dependencies</span><span class="kw">:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> thampi=0.1.0</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> numpy=1.15.*</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> scikit-learn=0.20.0</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> scipy=1.1.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="initialization" class="level4">
+<h4 class="anchored" data-anchor-id="initialization">Initialization</h4>
+<ul>
+<li>Run <code>thampi init</code> and you should see something similar to the terminal output below.</li>
+<li>For the s3 bucket, you can choose to have one bucket for all your thampi applications. Each project(model) is at a different prefix so as long as the projects have unique names, they won’t overwrite each other. If you aren’t confident of that, you could just give a different bucket for each thampi project.</li>
+<li>Choose pip or conda according to your preference.</li>
+</ul>
+<p>```shell script thampi init</p>
+</section>
+</section>
+</section>
+<section id="welcome-to-thampi" class="level2">
+<h2 class="anchored" data-anchor-id="welcome-to-thampi">Welcome to Thampi!</h2>
+<p>Enter Model Name. If your model name is ‘mymodel’, the predict endpoint will be myendpoint.com/mymodel/predict What do you want to call your model: mymodel —————–</p>
+<p>AWS Lambda and API Gateway are only available in certain regions. Let’s check to make sure you have a profile set up in one that will work. We found the following profiles: analytics, and default. Which would you like us to use? (default ‘default’): default ————</p>
+<p>Your Zappa deployments will need to be uploaded to a private S3 bucket. If you don’t have a bucket yet, we’ll create one for you too. What do you want to call your bucket? (default ‘thampi-2i1zp4ura’): thampi-store —————– Enter package manager:<a href="default:%20pip">‘conda’, ‘pip’</a>:pip A file zappa_settings.json has been created. If you made a mistake, delete it and run <code>thampi init</code> again</p>
+<pre><code>
+* It has created a file called `zappa_settings.json`. This file is used by the [`Zappa`](https://github.com/Miserlou/Zappa) framework. You’ll note that some defaults have been filled up which are suitable for machine learning projects. A notable setting is `keep_warm` which prevents AWS Lambda from evicting the instance due to lack of use, by pinging the lambda(e.g. every 4 minutes). This is useful in the case when you have very large models. However, you could take it out if you feel that your model is small enough. For more details on how you can customize `zappa_settings.json`, check out [zappa docs](https://github.com/Miserlou/Zappa#advanced-settings)
+* Within `zappa_settings.json`, `thampi` adds a key `thampi`. All `thampi` specific settings will go here. Note: `zappa` has no idea of thampi. It’s just a convenient place to store the thampi relevant configuration.
+
+### Training
+
+Inside `myproject`, copy the following code into the file `train.py`
+
+```python
+import numpy as np
+from sklearn import datasets
+from typing import Dict
+import thampi
+from sklearn.neighbors import KNeighborsClassifier
+ 
+class ThampiWrapper(thampi.Model):
+    def __init__(self, sklearn_model):
+        self.sklearn_model = sklearn_model
+        super().__init__()
+ 
+ 
+    def predict(self, args: Dict, context) -&gt; Dict:
+        original_input = [args.get('input')]
+        result = self.sklearn_model.predict(np.array(original_input))
+        return dict(result=int(list(result)[0]))
+ 
+def train_model():
+    iris = datasets.load_iris()
+    iris_X = iris.data
+    iris_y = iris.target
+    np.random.seed(0)
+    indices = np.random.permutation(len(iris_X))
+    iris_X_train = iris_X[indices[:-10]]
+    iris_y_train = iris_y[indices[:-10]]
+ 
+    knn = KNeighborsClassifier()
+    knn.fit(iris_X_train, iris_y_train)
+    return ThampiWrapper(knn)
+ 
+ 
+if __name__ == '__main__':
+    model = train_model()
+    thampi.save(model, 'iris-sklearn', './models')
+</code></pre>
+<ul>
+<li>The above code first trains the sklearn model as <code>knn</code>. To make the thampi web framework send the request data to the model, we wrap <code>knn</code> in <code>ThampiWrapper</code>, a class which implements the <code>thampi.Model</code> interface. The data sent to the serving endpoint will be passed by thampi to the <code>predict</code> method as <code>args</code>. Likewise, one can wrap models of other libraries as well. Ignore the <code>context</code> argument in the <code>predict</code> method for now. The <code>context</code> object sends in the Flask <code>application</code> object(and others in the future) which is probably not required for most of the use cases for now.</li>
+</ul>
+<p>And then at the terminal run <code>shell script python train.py</code></p>
+<p>This will create the model and save it locally using <code>thampi.save</code>. In thampi, like mlflow, the model artifacts are stored in a directory(i.e.&nbsp;iris-sklearn). Storing it in the models directory is just arbitrary convention.</p>
+<section id="serving-the-model" class="level4">
+<h4 class="anchored" data-anchor-id="serving-the-model">Serving the model</h4>
+<p>Now it’s time to upload the model to AWS Lambda. All you have to provide is the <code>requirements.txt</code> file along with the above trained <code>./models/iris-sklearn</code> directory.</p>
+<p><code>shell script thampi serve staging --model_dir=./models/iris-sklearn --dependency_file=./requirements.txt</code></p>
+<p>The <code>serve</code> command will use zappa internally to create or update a server endpoint. To see the endpoint, do <code>shell script thampi info staging</code></p>
+<p>You’ll see something similar to: <code>shell script {'url': 'https://8i7a6qtlri.execute-api.us-east-1.amazonaws.com/staging/mymodel/predict'}</code></p>
+<p>Let’s hit the endpoint in the next section.</p>
+</section>
+<section id="predict" class="level4">
+<h4 class="anchored" data-anchor-id="predict">Predict</h4>
+<p>You can do a curl like below where you replace <code>a_url</code> with the <code>url</code> that you receive from <code>thampi info staging</code></p>
+<p><code>shell script curl -d '{"data": {"input": [5.9, 3.2, 4.8, 1.8]}}' -H "Content-Type: application/json" -X POST a_url</code></p>
+<p><code>data</code> is a keyword here. Anything passed to <code>data</code> will be sent along to your model. The dictionary with the key <code>input</code> depends on your application. It could have been something else like <code>features</code> instead of <code>input</code> for e.g.&nbsp;If you remember from the <code>ThampiWrapper</code> code above, since we use <code>input</code>, our code reads the data as <code>args.get('input')</code></p>
+<p>Output: <code>shell script {   "properties": {     "instance_id": "9dbc56dd-936d-4dff-953c-8c22267ebe84",     "served_time_utc": "2018-09-06T22:03:09.247038",     "thampi_data_version": "0.1",     "trained_time_utc": "2018-09-06T22:03:04.886644"   },   "result": {     "result": 2   } }</code></p>
+<p>For convenience, you can also do: <code>shell script thampi predict staging --data='{"input": [5.9, 3.2, 4.8, 1.8]}'</code></p>
+<p>where <code>data</code> is of <code>json</code> format.</p>
+<p>The <code>properties</code> dictionary is meta-data associated with the model. Most of them are populated using the <code>save</code> command. If you want to add custom data (e.g <code>name</code> for your model and <code>version</code>, you can add it within <code>tags</code>)</p>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<p>Like most AWS Lambda solutions, thampi has restrictions which hopefully most use cases fall within.</p>
+<ul>
+<li>Conda support is only for dependency files <a href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#create-env-file-manually">crafted by hand</a></li>
+<li>Max 500MB disk space. Ensure that your project with it’s libraries is below this size.</li>
+<li>Max 900 MB model size. This number was derived from a few live tests. We circumvent the 500 MB disk space limit by loading the model directly from S3 to memory. thampi tries to reduce repeated calls to S3 by using zappa’s feature of pinging the lambda instance every 4 mins or so(configurable). In that way, the model will stay on the lambda instance(unless it’s a first time load or if AWS Lambda does decide to evict the instance for other reasons)</li>
+</ul>
+<p>Based on feedback, an option could be added to package the model with the code but you’ll then have to have a very small model size. It depends on what framework you use but generally you may have 100–250 MB space for your model as machine learning libraries take up a lot of space. Also look at the section on <a href="https://thampi.readthedocs.io/en/latest/design.html">Design</a></p>
+</section>
+<section id="alternatives" class="level3">
+<h3 class="anchored" data-anchor-id="alternatives">Alternatives</h3>
+<section id="aws-sagemaker" class="level4">
+<h4 class="anchored" data-anchor-id="aws-sagemaker">AWS Sagemaker</h4>
+<p>AWS SageMaker has the following advantages(not exhaustive):</p>
+<ul>
+<li>If you have SLAs, then Sagemaker may be a good choice. As they are on demand instances, you won’t have the cold start delays.</li>
+<li>GPU Inference available</li>
+<li>Can serve models bigger than 1 GB(upon filling a form)</li>
+<li>You can choose more powerful machines than what AWS Lambda can offer you.</li>
+</ul>
+<p>Sagemaker has the following costs(correct me if I am wrong):</p>
+<p>If you have to deploy a model which is not supported by Sagemaker(e.g.&nbsp;lightfm), then you have to:</p>
+<ul>
+<li>create your own docker image(manage your own OS updates e.g.&nbsp;security)</li>
+<li>implement a web server which has to implement a few endpoints</li>
+<li>manage auto scaling,</li>
+<li>provide handlers to SIGTERM and SIGKILL events</li>
+<li>manage some environment variables.</li>
+</ul>
+<p>For more details, look <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/your-algorithms-inference-code.html">here</a>.</p>
+<p>thampi(via AWS Lambda) abstracts all this away from you.</p>
+</section>
+<section id="algorithmia" class="level4">
+<h4 class="anchored" data-anchor-id="algorithmia">Algorithmia</h4>
+<p><a href="https://algorithmia.com/">Algorithmia</a> is a commercial alternative to Thampi. I’m not sure though how easy it is to deploy models on libraries not supported by Algorithmia(e.g.&nbsp;lightfm). Note: I haven’t spend too much researching Algorithmia.</p>
+</section>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>Hopefully, thampi satisfies a pain point for you. You can <a href="https://thampi.readthedocs.io/en/latest/installation.html">install it</a>, Try the <a href="https://thampi.readthedocs.io/en/latest/tutorial.html">tutorial</a> and let us know!</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
