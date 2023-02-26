@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2021-10-29">
+<meta name="description" content="A toy Datalog parser using Ohm parser and Glue.">
+
+<title>site - A toy Datalog parser using Ohm and Glue.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">site</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About me</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">A toy Datalog parser using Ohm and Glue.</h1>
+                  <div>
+        <div class="description">
+          A toy Datalog parser using Ohm parser and Glue.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">markdown</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 29, 2021</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#objective" id="toc-objective" class="nav-link active" data-scroll-target="#objective">Objective</a></li>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">Motivation</a></li>
+  <li><a href="#problem-statement" id="toc-problem-statement" class="nav-link" data-scroll-target="#problem-statement">Problem Statement</a></li>
+  <li><a href="#compiling" id="toc-compiling" class="nav-link" data-scroll-target="#compiling">Compiling</a>
+  <ul class="collapse">
+  <li><a href="#creating-a-parse-tree" id="toc-creating-a-parse-tree" class="nav-link" data-scroll-target="#creating-a-parse-tree">Creating a Parse Tree</a></li>
+  <li><a href="#glue" id="toc-glue" class="nav-link" data-scroll-target="#glue">Glue</a></li>
+  <li><a href="#code-generation" id="toc-code-generation" class="nav-link" data-scroll-target="#code-generation">Code Generation</a></li>
+  </ul></li>
+  <li><a href="#the-end" id="toc-the-end" class="nav-link" data-scroll-target="#the-end">The End</a></li>
+  <li><a href="#extra." id="toc-extra." class="nav-link" data-scroll-target="#extra.">Extra.</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="objective" class="level1">
+<h1>Objective</h1>
+<p>This post shows you how to create a toy Datalog, a laughably incomplete subset of the Datalog language, using an Ohm parser for the syntax and a Glue parser for the semantics. The final output is a Python program.</p>
+</section>
+<section id="motivation" class="level1">
+<h1>Motivation</h1>
+<p>I think the time has come for me to explore creating <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain specific languages</a>(DSL) to build software systems. I feel the benefits are: * <strong>write less code</strong>. I hope to generate the required code from the DSL code. * <strong>write code readable by domain experts</strong>. I hope to write executable code in that DSL that looks very similar to what an end user/domain expert would understand. Almost like writing English with some structure so that it can be executed. This enables fruitful and rapid interaction with domain experts/end users very early in the project preventing miscommunication errors. * <strong>decouple business logic from implementation</strong>. I hope to capture the business rules/business workflows at the level of the DSLs. This will allow me to easily change the implementation underneath without having to change the DSL code that captures the complex business logic. For e.g.&nbsp;I might initially generate simple Python code from my DSL but later I may generate performant code using multiprocessing libraries or even SQL code, all without changing my code written in the DSL. I just change the compiler.</p>
+<p>I hope to write a bigger post later explaining why I think DSLs are something worth exploring (ask me if you are interested.)</p>
+</section>
+<section id="problem-statement" class="level1">
+<h1>Problem Statement</h1>
+<p>I have a library in Python, called <a href="https://github%20.com/RAbraham/mercylog">mercylog</a> that is like Datalog. In this post, I want to take actual Datalog code and compile it to Python code which has <code>mercylog</code> statements. Let’s go further into what that means.</p>
+<p>I’m first going to show how to express the example in SQL as all of us are familiar with it. Imagine a database with tables <code>parent</code>, <code>man</code> and <code>woman</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="kw">parent</span> (</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    name <span class="dt">varchar</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">child</span> <span class="dt">varchar</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> man (</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    name <span class="dt">varchar</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> woman (</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    name <span class="dt">varchar</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="kw">parent</span> (name, <span class="kw">child</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'abe'</span>, <span class="st">'bob'</span>),</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'abby'</span>, <span class="st">'bob'</span>),</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'bob'</span>, <span class="st">'carl'</span>),</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'bob'</span>, <span class="st">'connor'</span>),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'beatrice'</span>, <span class="st">'carl'</span>);</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> man(name)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'abe'</span>),</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'bob'</span>);</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> woman(name)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'abby'</span>),</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'beatrice'</span>);</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">/* Query. Find Fathers */</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> man.name <span class="kw">as</span> father, <span class="kw">parent</span>.<span class="kw">child</span> <span class="kw">from</span> man <span class="kw">inner</span> <span class="kw">join</span> <span class="kw">parent</span> <span class="kw">ON</span> man.name <span class="op">=</span> <span class="kw">parent</span>.name;</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">/* Pasting the query result here as well */</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>name  <span class="kw">child</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">-----------  </span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>bob   carl  </span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>bob   connor  </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>abe   bob  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, I really like a language called <a href="https://en%20.wikipedia.org/wiki/Datalog">Datalog</a>. I have written an outdated but still understandable post here (raj: I’ll post a link soon). It’s an alternative to SQL. I even wrote a prototype Python library named <a href="https://github%20.com/RAbraham/mercylog">mercylog</a> to be able to execute Datalog like programs in Python.</p>
+<p>Let’s translate the above SQL to a simple variant of Datalog.</p>
+<pre><code>parent(abe, bob).
+parent(abby, bob).
+parent(bob, carl).
+parent(bob, connor).
+parent(beatrice, carl).
+man(abe).
+man(bob).
+woman(abby).
+woman(beatrice). &lt;=========== This and above are facts
+father(X, Y) :- man(X), parent(X, Y). &lt;============ This is a rule
+father(X, Y).  &lt;============= This is my query. Should be same result as SQL
+
+X       Y 
+-----------  
+bob   carl  
+bob   connor  
+abe   bob  </code></pre>
+<p>In Datalog, rows in a table are called facts. <code>X</code> and <code>Y</code> are special logic variables which are different from our regular Python variables. They are only relevant within a statement and are used to link data across relations. e.g.&nbsp;<code>X</code> signifies the same person in <code>father</code>, <code>man</code> and <code>parent</code> in the single rule above. (raj: I’ll post a link soon to explain more). <code>parent</code>, <code>man</code>, <code>woman</code> are called <code>relation</code>s just as in regular databases. Code is written as <code>rule</code>s. You can read the rule above as ‘X is a father of Y if X is man and X is the parent of Y’. The query is to find me all father and child combinations i.e.&nbsp;<code>father(X, Y)</code></p>
+<p>Note the schema creation step and explicit columns names(i.e. <code>name</code>, <code>child</code> for <code>parent</code>) are missing in this simplistic example of a Datalog variant(there are many of them). This is not saying that oh look, Datalog has so much less code than SQL so it’s better. In fact the opposite, I want explicit schema creation etc. in Datalog but that’s another project.</p>
+<p>Now, I have a prototype Python library called <code>mercylog</code>. Similar code there would be</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mercylog <span class="im">import</span> R, V, and_, db</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Some mercylog helper functions to define variables(V) and Relations(R)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> V.X</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> V.Y</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>parent <span class="op">=</span> R.parent</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>man <span class="op">=</span> R.man</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>woman <span class="op">=</span> R.woman</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>father <span class="op">=</span> R.father</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's define the data and rules and query in a single list. </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>facts_rules_query <span class="op">=</span> [</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    parent(<span class="st">"abe"</span>, <span class="st">"bob"</span>),</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    parent(<span class="st">"abby"</span>, <span class="st">"bob"</span>),</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    parent(<span class="st">"bob"</span>, <span class="st">"carl"</span>),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    parent(<span class="st">"bob"</span>, <span class="st">"connor"</span>),</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    parent(<span class="st">"beatrice"</span>, <span class="st">"carl"</span>),</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    man(<span class="st">"abe"</span>),</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    man(<span class="st">"bob"</span>),</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    woman(<span class="st">"abby"</span>),</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    woman(<span class="st">"beatrice"</span>),</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    father(X,Y) <span class="op">&lt;&lt;</span> and_(man(X), parent(X, Y)), <span class="co"># rule</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    father(X, Y), <span class="co"># query</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>] </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> db() <span class="co"># Create an in memory database</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> ds(facts_rules_query) <span class="co"># Execute the query</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.df()) </span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Result of above print statement</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>     X       Y</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>  bob  connor</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  bob    carl</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>  abe     bob</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="compiling" class="level1">
+<h1>Compiling</h1>
+<p>The two ‘simple’ stages of creating a compiler are:</p>
+<ol type="a">
+<li><strong>Creating a Parse Tree</strong>: writing a grammar to take raw text and convert that into a <a href="https://en%20.wikipedia.org/wiki/Parse_tree">parse tree</a>.</li>
+</ol>
+<p>For e.g., if the raw text is the mathematical expression <code>(2+x)^(3-y)</code>, the corresponding parse tree would be below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/RPN-ParseTree-1.svg/320px-RPN-ParseTree-1.svg.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Parse Tree</figcaption><p></p>
+</figure>
+</div>
+<p>For this, we will use <a href="https://github.com/harc/ohm">Ohm</a></p>
+<ol start="2" type="a">
+<li><strong>Assigning Semantics to Parse Tree</strong>: Taking the parse tree from the above phase and assigning some meaning to it. i.e. generating code that executes. In our case, we’ll be generating Python code. We could use Ohm for this too but I’ll use a DSL called Glue in the project <a href="https://github.com/guitarvydas/parse">parse</a> created by Paul Tarvydas.</li>
+</ol>
+<p>NOTE: Glue is very very much a prototype. It can fail across many edge cases. If this interests you, Paul is looking for programmers who can help him build out his vision.</p>
+<section id="creating-a-parse-tree" class="level2">
+<h2 class="anchored" data-anchor-id="creating-a-parse-tree">Creating a Parse Tree</h2>
+<p>Alright, time to dive in. We build the grammar for our toy Datalog. Ohm has an excellent <a href="https://ohmlang.github.io/editor/">grammar editor</a> which allows one to write a grammar, test it with examples and see the ‘concrete syntax tree’ i.e.&nbsp;how a concrete example of Datalog code breaks out into a parse tree.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/ohm-editor-datalog.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Ohm Editor</figcaption><p></p>
+</figure>
+</div>
+<p>Let’s start with the smallest Ohm grammar</p>
+<pre class="shell"><code>datalog {
+ Program = Statement+
+}</code></pre>
+<p>This is just saying that my Datalog code is a <code>Program</code> with one or more <code>Statement</code>s. The <code>+</code> indicates one or more.</p>
+<p>What’s a <code>Statement</code>? Well, in the simplest case, we have a fact, e.g.&nbsp;<code>parent(abe, bob).</code> and then we have a rule e.g.&nbsp;<code>father (X, Y) :- man(X), parent(X, Y).</code>. I see a sub pattern there as <code>relation (Variable1, Variable2)</code>. I’ll call this a <code>Clause</code> and then I’ll worry later how to parse it. So the rule becomes <code>Clause :- Clause, Clause.</code> or even <code>Clause :- Clause, Clause, Clause..</code>. We have to capture the pattern <code>, Clause</code> 0 or many times. The way we do it in Ohm is like this.</p>
+<pre class="shell"><code>Statement =
+    Clause "."                          -- fact
+  | Clause ":-" Clause CommaClause* "." -- rule
+
+CommaClause = "," Clause</code></pre>
+<p><code>-- fact</code> and <code>-- rule</code> look like comments but they are more than that. I’ll explain later below.</p>
+<p>Cool, what’s a Clause? It’s like <code>relation(Variable1, Variable2,..,VariableN)</code>. I’m going to worry about the ‘variable’ number of variables later. For now, I’ll call it</p>
+<pre class="shell"><code>Clause = Relation "(" IDList ")"</code></pre>
+<p>Ok, What’s a <code>Relation</code>? It’s a lower case string e.g.&nbsp;<code>father</code> and it has to start with a lower case letter(a Datalog convention). We need to capture single letter relations e.g <code>a</code> in <code>a(X,Y)</code> or bigger relations e.g.&nbsp;<code>father</code></p>
+<pre class="shell"><code>Relation = LowerCaseIdent
+LowerCaseIdent = "a" .. "z" identRest*
+identRest = "0-9" | "_" | "A" .. "Z" | "a" .. "z"</code></pre>
+<p><code>identRest</code> captures the pattern that the rest of the identifier can can either be a number, underscore or upper case or lower case letters.</p>
+<p>Now, <code>IDList</code>. You’ll notice a trend here with CommaClause and IDList. It has the same feeling like designing functions. Often, I’ll write pseudocode on how I want a function to look and I’ll design the subroutines without actually implementing them. Just the subroutine calls. Once I like what I see, I’ll then go ahead and implement each subroutine. It feels similar here.</p>
+<p><code>IDList</code> has the same feel like <code>Clause</code>, doesn’t it?</p>
+<pre class="shell"><code>IDList = ID CommaID*
+CommaID = "," ID</code></pre>
+<p>An <code>ID</code> is going to be either a literal(or constant) like <code>abe</code> in <code>man(abe)</code> or a variable like <code>X</code> and <code>Y</code> in <code>father(X, Y)</code>. A variable starts with a capital letter as per Datalog convention.</p>
+<pre class="shell"><code>
+ID = Variable | Literal
+Variable = CapitalizedIdent
+Literal = LowerCaseIdent 
+#LowerCaseIdent  and identRest were already explained before
+CapitalizedIdent = "A" .. "Z" identRest*
+</code></pre>
+<p>So there you go, I think that’s it. Let’s see the whole ohm grammar file.</p>
+<pre class="shell"><code>datalog {
+Program = Statement+
+Statement =
+    Clause "."                          -- fact
+  | Clause ":-" Clause CommaClause* "." -- rule
+
+Clause = Relation "(" IDList ")"
+CommaClause = "," Clause
+
+Relation = LowerCaseIdent
+IDList = ID CommaID*
+ID = Variable | Literal
+CommaID = "," ID
+
+Variable = CapitalizedIdent
+Literal = LowerCaseIdent
+
+LowerCaseIdent = "a" .. "z" identRest*
+CapitalizedIdent = "A" .. "Z" identRest*
+
+identRest = "0-9" | "_" | "A" .. "Z" | "a" .. "z"
+}</code></pre>
+</section>
+<section id="glue" class="level2">
+<h2 class="anchored" data-anchor-id="glue">Glue</h2>
+<p>Now that we have the Ohm grammar, it’s time to use it to assign some meaning to the parse tree that it’ll generate from our sample Datalog program. Ohm actually already allows us to do that too.</p>
+<p>However, <a href="https://guitarvydas.github.io/">Paul Tarvydas</a> found that he was writing a lot of boilerplate code and decided to ….. write another DSL for it! It’s called Glue.</p>
+<p>CAUTION: Glue is a prototype and does not cover all edge cases.</p>
+<p>The way Glue works is you take all the symbols in your Ohm grammar e.g.&nbsp;<code>Clause</code>, <code>ID</code> and write a corresponding piece of JavaScript code to be generated. Glue also simplifies it in the way that you can just write the string of code(Python in my case) that you want to generate. Let’s start with a dummy example.</p>
+<pre class="shell"><code>Program [@Statement] = [[ ${Statement} ]]</code></pre>
+<p>Here, <code>Program</code> and <code>Statement</code> are from the Ohm grammar above. Since we have multiple statements, we use <code>@</code> to indicate that. The code to be generated is between <code>[[</code> and <code>]]</code>. And we refer to the code with JavaScript interpolation code <code>${}</code>. What is the value of <code>Statement</code> above? Well, it’ll be populated ‘somehow’ by Ohm with the values from the rest of the grammar.</p>
+<p>I think the above example was too easy for you :) . Let’s show you what I have to actually do.</p>
+<p>If you look at my required Python Mercylog code above, I need to first generate some generic, wrapper like Python code like <code>mercylog</code> import statements and initialization no matter what the Datalog code is to be generated.</p>
+<pre class="shell"><code>
+from mercylog import R, V, and_, db
+fb = [ .. statements ..] # refer to facts_rules_query above 
+ds = db() 
+result = ds(fb)
+print(result.df()) </code></pre>
+<p>The way we specify that in Glue is:</p>
+<pre class="shell"><code>Program [@Statement] = [[from mercylog import R, V, and_, db\nfb = \[ ${Statement}\] \nds = db() \nresult = ds(fb) \nprint(result.df()) ]]</code></pre>
+<p>It may not look very clean and Paul may have some way to improve on this but I just wanted to give you an idea.</p>
+<p>We need to escape special characters in Glue. For e.g., I have to use <code>[]</code> for Python but that means something in Glue too so I have to escape it e.g.&nbsp;<code>\[</code></p>
+<p>Where do we get statements from? Well, there was something I didn’t mention before, that it’s time to talk about now. Notice the <code>-- rule</code> and <code>-- fact</code> in our Ohm grammar?</p>
+<pre class="shell"><code>Statement =
+    Clause "."                          -- fact
+  | Clause ":-" Clause CommaClause* "." -- rule
+</code></pre>
+<p>They look like comments but they are called <code>case labels</code> in Ohm. They are a way to specify different execution paths for Glue (actually, for Ohm, which Glue uses underneath). So we have two entries in Glue for Statement, <code>Statement_fact</code> and <code>Statement_rule</code></p>
+<p>Note, that the number of parameters for e.g. <code>Statement_fact</code> match closely with how it’s grammar is specified. Using <code>k</code> in <code>kperiod</code> is just a convention, I think, to indicate that it’s a literal unlike the others.</p>
+<p>If it’s a fact, I just have to add it to the list <code>fb</code>. The code containing <code>fb</code> is generated above for <code>Program  [@statement]</code>. So I take <code>clause</code> which will be generated later and just add a <code>,</code> to it, as I’m adding it to a Python list which wants a comma between list elements. For rules, I have to convert <code>Statement_rule</code> to the corresponding <code>mercylog  statement</code> i.e.&nbsp;<code>clause1 &lt;&lt; and_(...)</code></p>
+<pre class="shell"><code>Statement_fact [clause kperiod] = [[${clause},\n]]
+Statement_rule [clause1 kcolondash clause @commaclause kdot] = [[${clause1} &lt;&lt; and_(${clause}${commaclause}),\n]]
+</code></pre>
+<p>I think the rest of the code follows the same principles explained above.</p>
+<p>Here’s the final Glue Code.</p>
+<pre class="shell"><code>Program [@Statement] = [[from mercylog import R, V, and_, db\nfb = \[ ${Statement}\] \nds = db() \nresult = ds(fb) \nprint(result.df()) ]]
+Statement_fact [clause kperiod] = [[${clause},\n]]
+Statement_rule [clause1 kcolondash clause @commaclause kdot] = [[${clause1} &lt;&lt; and_(${clause}${commaclause}),\n]]
+
+Clause [predicate klpar idlist krpar] = [[${predicate}(${idlist})]]
+
+CommaClause [kcomma clause] = [[\,${clause}]]
+
+Relation [lowercaseident] = [[R.${lowercaseident}]]
+IDList [id @commaid] = [[${id}${commaid}]]
+
+ID [id] = [[${id}]]
+CommaID [kcomma id] = [[\, ${id}]]
+
+Variable [capident] = [[V.${capident}]]
+Literal [lowercaseident] = [["${lowercaseident}"]]
+
+LowerCaseIdent [c @cs] = [[${c}${cs}]]
+
+CapitalizedIdent [c @cs] = [[${c}${cs}]]
+
+identRest [c] = [[${c}]]</code></pre>
+</section>
+<section id="code-generation" class="level2">
+<h2 class="anchored" data-anchor-id="code-generation">Code Generation</h2>
+<p>So we have the Ohm and Glue grammars. We can now take a Datalog program and generate Python code. Using the <code>pfr</code> tool in the repo <a href="https://github.com/guitarvydas/parse">parse</a> tool which reads an Ohm, Glue file and input source language file, we can generate the Python code.</p>
+<pre class="shell"><code>pfr test.datalog datalog.ohm mercylog.glue &gt; test.py 
+</code></pre>
+<p>NOTE: I had to hack the code above a bit to make it work for me but Paul may have updated his repo to make it work seamlessly for all. The emphasis here is not on having production ready tools but to rapidly explore ideas in DSL building and get feedback.</p>
+<p>That generates</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mercylog <span class="im">import</span> R, V, and_, db</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>fb <span class="op">=</span> [ R.parent(<span class="st">"abe"</span>, <span class="st">"bob"</span>),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>R.parent(<span class="st">"abby"</span>, <span class="st">"bob"</span>),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>R.parent(<span class="st">"bob"</span>, <span class="st">"carl"</span>),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>R.parent(<span class="st">"bob"</span>, <span class="st">"connor"</span>),</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>R.parent(<span class="st">"beatrice"</span>, <span class="st">"carl"</span>),</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>R.man(<span class="st">"abe"</span>),</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>R.man(<span class="st">"bob"</span>),</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>R.woman(<span class="st">"abby"</span>),</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>R.woman(<span class="st">"beatrice"</span>),</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>R.father(V.X, V.Y) <span class="op">&lt;&lt;</span> and_(R.man(V.X),R.parent(V.X, V.Y)),</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>R.father(V.X, V.Y),</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>] </span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> db() </span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> ds(fb) </span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.df()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Not that it’s not indented properly, nor have I done any optimizations. For e.g.&nbsp;<code>V.X</code> could be refactored to <code>X=V.X</code> like in the Python code showed in the very beginning. But that’s another exercise.</p>
+<p>Now to test my code, I have to create a project with <code>mercylog</code> in my dependencies and then do</p>
+<pre class="shell"><code>python test.py
+</code></pre>
+<p>and I’ll see</p>
+<pre class="shell"><code>      Y    X
+0  connor  bob
+1     bob  abe
+2    carl  bob</code></pre>
+</section>
+</section>
+<section id="the-end" class="level1">
+<h1>The End</h1>
+<p>There you go! a first stab at making DSLs. I hope you liked it. If you think about it, we ‘compiled’ a DSL(Datalog) using two other DSLs(Ohm and Glue). It makes you wonder, can we do everything in DSLs?</p>
+<p>I would like to thank <a href="https://guitarvydas.github.io/">Paul Tarvydas</a> for his excellent support while I figured it out. Please do check his blog and ideas.</p>
+</section>
+<section id="extra." class="level1">
+<h1>Extra.</h1>
+<ul>
+<li><p>Ohm has a built-in to express a List of tokens, e.g.&nbsp;<code>IDList = ID CommaID*</code> above can be written as <code>IDList = ListOf&lt;ID, ","&gt;</code>. The reason we don’t use it is because <code>Glue</code> does not support it. The side benefit is that I can show you the foundation blocks of PEG, the grammar language used by Ohm.</p></li>
+<li><p>A great Datalog variant with explicit column names is <a href="https://github.com/EvgSkv/logica">Logica</a></p></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

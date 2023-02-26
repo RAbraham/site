@@ -1,0 +1,14 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/post-with-code/index.html",
+      "/posts/welcome/index.html",
+      "/posts/2021-12-13-tabbyql-design.html",
+      "/posts/2021-10-29-dsl-datalog-ohm-glue.html",
+      "/posts/2020-02-20-test.html",
+      "/posts/2020-02-16-introducing-mercylog.html",
+      "/posts/2020-01-14-test-markdown-post.html"
+    ]
+  }
+]
