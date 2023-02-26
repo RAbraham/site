@@ -1,11 +1,8 @@
 ---
-aliases:
-- /markdown/2020/02/16/introducing-mercylog
 categories:
 - markdown
 date: '2020-02-16'
-description: Datalog is like SQL + Recursion. It's derivatives have reduced the code
-  base by 50% or more.
+description: Introduction to Datalog(Bashlog) in Python.
 layout: post
 title: Introduction to Datalog(Bashlog) in Python.
 toc: true
