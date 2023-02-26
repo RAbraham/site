@@ -18,4 +18,4 @@ This post is to present, for feedback, an alternative to SQL: TabbyQL, a visual 
 (ask me and I'll write something up)
 
 # Design
-![](images/TabbyQL-Final-Img.png)
+![](../images/TabbyQL-Final-Img.png)

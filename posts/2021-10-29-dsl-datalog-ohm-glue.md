@@ -221,7 +221,7 @@ Alright, time to dive in. We build the grammar for our toy Datalog. Ohm has
   one to
  write a grammar, test it with examples and see the 'concrete syntax tree' i.e. how a concrete example of Datalog code breaks out into a parse tree.
 
-![Ohm Editor](images/ohm-editor-datalog.png)
+![Ohm Editor](../images/ohm-editor-datalog.png)
 
 
 Let's start with the smallest Ohm grammar
