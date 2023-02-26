@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://RAbraham.github.io/site/index.html</loc>
+    <lastmod>2023-02-26T22:48:02.816Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RAbraham.github.io/site/about.html</loc>
+    <lastmod>2023-02-26T22:48:03.148Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RAbraham.github.io/site/posts/2021-12-13-tabbyql-design.html</loc>
+    <lastmod>2023-02-26T22:48:03.464Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RAbraham.github.io/site/posts/2021-10-29-dsl-datalog-ohm-glue.html</loc>
+    <lastmod>2023-02-26T22:48:04.284Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RAbraham.github.io/site/posts/2020-02-16-introducing-mercylog.html</loc>
+    <lastmod>2023-02-26T22:48:04.996Z</lastmod>
+  </url>
+</urlset>

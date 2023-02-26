@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "site",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nFeb 26, 2023\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nFeb 23, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\n  \n\n\n\n\nTabbyQL. A visual query language for databases\n\n\n\n\n\n\n\nmarkdown\n\n\n\n\nDesign of TabbyQL. A visual alternative to SQL\n\n\n\n\n\n\nDec 13, 2021\n\n\n\n\n\n\n  \n\n\n\n\nA toy Datalog parser using Ohm and Glue.\n\n\n\n\n\n\n\nmarkdown\n\n\n\n\nA toy Datalog parser using Ohm parser and Glue.\n\n\n\n\n\n\nOct 29, 2021\n\n\n\n\n\n\n  \n\n\n\n\nFastpages Notebook Blog Post\n\n\n\n\n\n\n\njupyter\n\n\n\n\nA tutorial of fastpages for Jupyter notebooks.\n\n\n\n\n\n\nFeb 20, 2020\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIntroduction to Datalog(Bashlog) in Python.\n\n\n\n\n\n\n\nmarkdown\n\n\n\n\nDatalog is like SQL + Recursion. It’s derivatives have reduced the code base by 50% or more.\n\n\n\n\n\n\nFeb 16, 2020\n\n\n\n\n\n\n  \n\n\n\n\nAn Example Markdown Post by Rajiv\n\n\n\n\n\n\n\nmarkdown\n\n\n\n\nA minimal example of using markdown with fastpages.\n\n\n\n\n\n\nJan 14, 2020\n\n\n\n\n\n\nNo matching items"
+    "text": "TabbyQL. A visual query language for databases\n\n\n\n\n\n\n\nmarkdown\n\n\n\n\nDesign of TabbyQL. A visual alternative to SQL\n\n\n\n\n\n\nDec 13, 2021\n\n\n\n\n\n\n  \n\n\n\n\nA toy Datalog parser using Ohm and Glue.\n\n\n\n\n\n\n\nmarkdown\n\n\n\n\nA toy Datalog parser using Ohm parser and Glue.\n\n\n\n\n\n\nOct 29, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIntroduction to Datalog(Bashlog) in Python.\n\n\n\n\n\n\n\nmarkdown\n\n\n\n\nDatalog is like SQL + Recursion. It’s derivatives have reduced the code base by 50% or more.\n\n\n\n\n\n\nFeb 16, 2020\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -14,74 +14,11 @@
     "text": "I don’t know how it came to me but it changed my life. I was in grad school and my coding style was “bang on the keyboard until it’s done”. Then I chanced upon Martin Fowler’s book on Refactoring. I did not know that there was ‘good’ code and ‘bad’ code. It was supposed to be just code!\nThat book started a journey where programming became a creative endeavour. I just had to write ‘good’ code. I’m still writing ‘bad’ code. I could give up but the search has improved me as a programmer. It’s the journey after all(something I still don’t want to believe in. There has to be a pot of gold at the end ;) )\nThis journey has brought me to declarative programming languages. I am now investigating Datalog as a programming language. Bloom, Differential Datalog, MLog all inspire me. Is there a common ground? Check out at Mercylog :)"
   },
   {
-    "objectID": "posts/2020-02-20-test.html",
-    "href": "posts/2020-02-20-test.html",
-    "title": "Fastpages Notebook Blog Post",
-    "section": "",
-    "text": "This notebook is a demonstration of some of capabilities of fastpages with notebooks.\nWith fastpages you can save your jupyter notebooks into the _notebooks folder at the root of your repository, and they will be automatically be converted to Jekyll compliant blog posts!\n\n\nThe first cell in your Jupyter Notebook or markdown blog post contains front matter. Front matter is metadata that can turn on/off options in your Notebook. It is formatted like this:\n# \"My Title\"\n> \"Awesome summary\"\n\n- toc: true\n- branch: master\n- badges: true\n- comments: true\n- author: Hamel Husain & Jeremy Howard\n- categories: [fastpages, jupyter]\n\nSetting toc: true will automatically generate a table of contents\nSetting badges: true will automatically include GitHub and Google Colab links to your notebook.\nSetting comments: true will enable commenting on your blog post, powered by utterances.\n\nThe title and description need to be enclosed in double quotes only if they include special characters such as a colon. More details and options for front matter can be viewed on the front matter section of the README.\n\n\n\nA #hide comment at the top of any code cell will hide both the input and output of that cell in your blog post.\nA #hide_input comment at the top of any code cell will only hide the input of that cell.\n\n\nThe comment #hide_input was used to hide the code that produced this.\n\n\nput a #collapse-hide flag at the top of any cell if you want to hide that cell by default, but give the reader the option to show it:\n\n\nCode\nimport pandas as pd\nimport altair as alt\n\n\nput a #collapse-show flag at the top of any cell if you want to show that cell by default, but give the reader the option to hide it:\n\n\nCode\ncars = 'https://vega.github.io/vega-datasets/data/cars.json'\nmovies = 'https://vega.github.io/vega-datasets/data/movies.json'\nsp500 = 'https://vega.github.io/vega-datasets/data/sp500.csv'\nstocks = 'https://vega.github.io/vega-datasets/data/stocks.csv'\nflights = 'https://vega.github.io/vega-datasets/data/flights-5k.json'\n\n\nplace a #collapse-output flag at the top of any cell if you want to put the output under a collapsable element that is closed by default, but give the reader the option to open it:\n\n#collapse-output\nprint('The comment #collapse-output was used to collapse the output of this cell by default but you can expand it.')\n\nThe comment #collapse-output was used to collapse the output of this cell by default but you can expand it.\n\n\n\n\n\nCharts made with Altair remain interactive. Example charts taken from this repo, specifically this notebook.\n\n\n\n# single-value selection over [Major_Genre, MPAA_Rating] pairs\n# use specific hard-wired values as the initial selected values\nselection = alt.selection_single(\n    name='Select',\n    fields=['Major_Genre', 'MPAA_Rating'],\n    init={'Major_Genre': 'Drama', 'MPAA_Rating': 'R'},\n    bind={'Major_Genre': alt.binding_select(options=genres), 'MPAA_Rating': alt.binding_radio(options=mpaa)}\n)\n  \n# scatter plot, modify opacity based on selection\nalt.Chart(df).mark_circle().add_selection(\n    selection\n).encode(\n    x='Rotten_Tomatoes_Rating:Q',\n    y='IMDB_Rating:Q',\n    tooltip='Title:N',\n    opacity=alt.condition(selection, alt.value(0.75), alt.value(0.05))\n)\n\n\n\n\n\n\n\n\n\n\n\nalt.Chart(df).mark_circle().add_selection(\n    alt.selection_interval(bind='scales', encodings=['x'])\n).encode(\n    alt.X('Rotten_Tomatoes_Rating', type='quantitative'),\n    alt.Y('IMDB_Rating', type='quantitative', axis=alt.Axis(minExtent=30)),\n#     y=alt.Y('IMDB_Rating:Q', ), # use min extent to stabilize axis title placement\n    tooltip=['Title:N', 'Release_Date:N', 'IMDB_Rating:Q', 'Rotten_Tomatoes_Rating:Q']\n).properties(\n    width=500,\n    height=400\n)\n\n\n\n\n\n\n\n\n\n\n\n# select a point for which to provide details-on-demand\nlabel = alt.selection_single(\n    encodings=['x'], # limit selection to x-axis value\n    on='mouseover',  # select on mouseover events\n    nearest=True,    # select data point nearest the cursor\n    empty='none'     # empty selection includes no data points\n)\n\n# define our base line chart of stock prices\nbase = alt.Chart().mark_line().encode(\n    alt.X('date:T'),\n    alt.Y('price:Q', scale=alt.Scale(type='log')),\n    alt.Color('symbol:N')\n)\n\nalt.layer(\n    base, # base line chart\n    \n    # add a rule mark to serve as a guide line\n    alt.Chart().mark_rule(color='#aaa').encode(\n        x='date:T'\n    ).transform_filter(label),\n    \n    # add circle marks for selected time points, hide unselected points\n    base.mark_circle().encode(\n        opacity=alt.condition(label, alt.value(1), alt.value(0))\n    ).add_selection(label),\n\n    # add white stroked text to provide a legible background for labels\n    base.mark_text(align='left', dx=5, dy=-5, stroke='white', strokeWidth=2).encode(\n        text='price:Q'\n    ).transform_filter(label),\n\n    # add text labels for stock prices\n    base.mark_text(align='left', dx=5, dy=-5).encode(\n        text='price:Q'\n    ).transform_filter(label),\n    \n    data=stocks\n).properties(\n    width=500,\n    height=400\n)\n\n\n\n\n\n\n\n\n\n\nYou can display tables per the usual way in your blog:\n\n# display table with pandas\ndf[['Title', 'Worldwide_Gross', \n    'Production_Budget', 'Distributor', 'MPAA_Rating', 'IMDB_Rating', 'Rotten_Tomatoes_Rating']].head()\n\n\n\n\n\n  \n    \n      \n      Title\n      Worldwide_Gross\n      Production_Budget\n      Distributor\n      MPAA_Rating\n      IMDB_Rating\n      Rotten_Tomatoes_Rating\n    \n  \n  \n    \n      0\n      The Land Girls\n      146083.0\n      8000000.0\n      Gramercy\n      R\n      6.1\n      NaN\n    \n    \n      1\n      First Love, Last Rites\n      10876.0\n      300000.0\n      Strand\n      R\n      6.9\n      NaN\n    \n    \n      2\n      I Married a Strange Person\n      203134.0\n      250000.0\n      Lionsgate\n      None\n      6.8\n      NaN\n    \n    \n      3\n      Let's Talk About Sex\n      373615.0\n      300000.0\n      Fine Line\n      None\n      NaN\n      13.0\n    \n    \n      4\n      Slam\n      1087521.0\n      1000000.0\n      Trimark\n      R\n      3.4\n      62.0\n    \n  \n\n\n\n\n\n\n\n\n\nYou can reference local images and they will be copied and rendered on your blog automatically. You can include these with the following markdown syntax:\n![](my_icons/fastai_logo.png)\n\n\n\n\nRemote images can be included with the following markdown syntax:\n![](https://image.flaticon.com/icons/svg/36/36686.svg)\n\n\n\n\nAnimated Gifs work, too!\n![](https://upload.wikimedia.org/wikipedia/commons/7/71/ChessPawnSpecialMoves.gif)\n\n\n\n\nYou can include captions with markdown images like this:\n![](https://www.fast.ai/images/fastai_paper/show_batch.png \"Credit: https://www.fast.ai/2020/02/13/fastai-A-Layered-API-for-Deep-Learning/\")"
-  },
-  {
-    "objectID": "posts/2020-02-20-test.html#github-flavored-emojis",
-    "href": "posts/2020-02-20-test.html#github-flavored-emojis",
-    "title": "Fastpages Notebook Blog Post",
-    "section": "GitHub Flavored Emojis",
-    "text": "GitHub Flavored Emojis\nTyping I give this post two :+1:! will render this:\nI give this post two :+1:!"
-  },
-  {
-    "objectID": "posts/2020-02-20-test.html#tweetcards",
-    "href": "posts/2020-02-20-test.html#tweetcards",
-    "title": "Fastpages Notebook Blog Post",
-    "section": "Tweetcards",
-    "text": "Tweetcards\nTyping > twitter: https://twitter.com/jakevdp/status/1204765621767901185?s=20 will render this:\n\ntwitter: https://twitter.com/jakevdp/status/1204765621767901185?s=20"
-  },
-  {
-    "objectID": "posts/2020-02-20-test.html#youtube-videos",
-    "href": "posts/2020-02-20-test.html#youtube-videos",
-    "title": "Fastpages Notebook Blog Post",
-    "section": "Youtube Videos",
-    "text": "Youtube Videos\nTyping > youtube: https://youtu.be/XfoYk_Z5AkI will render this:"
-  },
-  {
-    "objectID": "posts/2020-02-20-test.html#boxes-callouts",
-    "href": "posts/2020-02-20-test.html#boxes-callouts",
-    "title": "Fastpages Notebook Blog Post",
-    "section": "Boxes / Callouts",
-    "text": "Boxes / Callouts\nTyping > Warning: There will be no second warning! will render this:\n\n\n\n\n\n\nWarning\n\n\n\nThere will be no second warning!\n\n\nTyping > Important: Pay attention! It's important. will render this:\n\n\n\n\n\n\nImportant\n\n\n\nPay attention! It’s important.\n\n\nTyping > Tip: This is my tip. will render this:\n\n\n\n\n\n\nTip\n\n\n\nThis is my tip.\n\n\nTyping > Note: Take note of this. will render this:\n\n\n\n\n\n\nNote\n\n\n\nTake note of this.\n\n\nTyping > Note: A doc link to [an example website: fast.ai](https://www.fast.ai/) should also work fine. will render in the docs:\n\n\n\n\n\n\nNote\n\n\n\nA doc link to an example website: fast.ai should also work fine."
-  },
-  {
-    "objectID": "posts/2020-02-20-test.html#footnotes",
-    "href": "posts/2020-02-20-test.html#footnotes",
-    "title": "Fastpages Notebook Blog Post",
-    "section": "Footnotes",
-    "text": "Footnotes\nYou can have footnotes in notebooks, however the syntax is different compared to markdown documents. This guide provides more detail about this syntax, which looks like this:\n{% raw %}For example, here is a footnote {% fn 1 %}.\nAnd another {% fn 2 %}\n{{ 'This is the footnote.' | fndetail: 1 }}\n{{ 'This is the other footnote. You can even have a [link](www.github.com)!' | fndetail: 2 }}{% endraw %}\nFor example, here is a footnote {% fn 1 %}.\nAnd another {% fn 2 %}\n{{ ‘This is the footnote.’ | fndetail: 1 }} {{ ‘This is the other footnote. You can even have a link!’ | fndetail: 2 }}"
-  },
-  {
-    "objectID": "posts/2020-01-14-test-markdown-post.html",
-    "href": "posts/2020-01-14-test-markdown-post.html",
-    "title": "An Example Markdown Post by Rajiv",
-    "section": "",
-    "text": "Jekyll requires blog post files to be named according to the following format:\nYEAR-MONTH-DAY-filename.md\nWhere YEAR is a four-digit number, MONTH and DAY are both two-digit numbers, and filename is whatever file name you choose, to remind yourself what this post is about. .md is the file extension for markdown files.\nThe first line of the file should start with a single hash character, then a space, then your title. This is how you create a “level 1 heading” in markdown. Then you can create level 2, 3, etc headings as you wish but repeating the hash character, such as you see in the line ## File names above.\n\n\n\nYou can use italics, bold, code font text, and create links. Here’s a footnote 1. Here’s a horizontal rule:\n\n\n\n\nHere’s a list:\n\nitem 1\nitem 2\n\nAnd a numbered list:\n\nitem 1\nitem 2\n\n\n\n\n\nThis is a quotation\n\n{% include alert.html text=“You can include alert boxes” %}\n…and…\n{% include info.html text=“You can include info boxes” %}\n\n\n\n\n\n\n\nYou can format text and code per usual\nGeneral preformatted text:\n# Do a thing\ndo_thing()\nPython code and output:\n# Prints '2'\nprint(1+1)\n2\nFormatting text as shell commands:\necho \"hello world\"\n./some_script.sh --option \"value\"\nwget https://example.com/cat_photo1.png\nFormatting text as YAML:\nkey: value\n- another_key: \"another value\"\n\n\n\n\n\n\nColumn 1\nColumn 2\n\n\n\n\nA thing\nAnother thing\n\n\n\n\n\n\n{% twitter https://twitter.com/jakevdp/status/1204765621767901185?s=20 %}"
-  },
-  {
     "objectID": "posts/2021-12-13-tabbyql-design.html",
     "href": "posts/2021-12-13-tabbyql-design.html",
     "title": "TabbyQL. A visual query language for databases",
     "section": "",
     "text": "Objective\nThis post is to present, for feedback, an alternative to SQL: TabbyQL, a visual dataflow query language.\n\n\nMotivation\n(ask me and I’ll write something up)\n\n\nDesign"
-  },
-  {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
-    "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
-  },
-  {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
-    "section": "",
-    "text": "This is a post with executable code."
   },
   {
     "objectID": "posts/2021-10-29-dsl-datalog-ohm-glue.html",
