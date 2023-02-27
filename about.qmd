@@ -16,8 +16,6 @@ about:
 
 ---
 
-I don't know how it came to me but it changed my life. I was in grad school and my coding style was *"bang on the keyboard until it's done"*. Then I chanced upon Martin Fowler's [book](https://martinfowler.com/books/refactoring.html) on Refactoring. I did not know that there was 'good' code and 'bad' code. It was supposed to be just code!
+I don't know how it came to me but it changed my life. I was in grad school and my coding style was *"bang on the keyboard until it's done"*. Then I chanced upon Martin Fowler's [book](https://martinfowler.com/books/refactoring.html) on Refactoring. Before that, I did not know that there was 'good' code and 'bad' code.
 
-That book started a journey where programming became a creative endeavour. I just had to write 'good' code. I'm still writing 'bad' code. I could give up but the search has improved me as a programmer. It's the journey after all(something I still don't want to believe in. There has to be a pot of gold at the end ;) )
-
-This journey has brought me to declarative programming languages. I am now investigating Datalog as a programming language. [Bloom](http://bloom-lang.net/index.html), [Differential Datalog](https://github.com/vmware/differential-datalog), [MLog](http://www.vldb.org/pvldb/vol10/p1933-zhang.pdf) all inspire me. Is there a common ground? Check out at [Mercylog](https://github.com/RAbraham/mercylog) :)
+That book started a journey where programming became a creative endeavour and improved me as a programmer. This journey has brought me to declarative programming languages. I am now investigating Datalog as a programming language. [Bloom](http://bloom-lang.net/index.html), [Differential Datalog](https://github.com/vmware/differential-datalog), [MLog](http://www.vldb.org/pvldb/vol10/p1933-zhang.pdf) all inspire me. Is there a common ground? Check out at [Mercylog](https://github.com/RAbraham/mercylog) :)
