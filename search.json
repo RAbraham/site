@@ -11,7 +11,7 @@
     "href": "about.html",
     "title": "About me",
     "section": "",
-    "text": "I don’t know how it came to me but it changed my life. I was in grad school and my coding style was “bang on the keyboard until it’s done”. Then I chanced upon Martin Fowler’s book on Refactoring. I did not know that there was ‘good’ code and ‘bad’ code. It was supposed to be just code!\nThat book started a journey where programming became a creative endeavour. I just had to write ‘good’ code. I’m still writing ‘bad’ code. I could give up but the search has improved me as a programmer. It’s the journey after all(something I still don’t want to believe in. There has to be a pot of gold at the end ;) )\nThis journey has brought me to declarative programming languages. I am now investigating Datalog as a programming language. Bloom, Differential Datalog, MLog all inspire me. Is there a common ground? Check out at Mercylog :)"
+    "text": "I don’t know how it came to me but it changed my life. I was in grad school and my coding style was “bang on the keyboard until it’s done”. Then I chanced upon Martin Fowler’s book on Refactoring. Before that, I did not know that there was ‘good’ code and ‘bad’ code.\nThat book started a journey where programming became a creative endeavour and improved me as a programmer. This journey has brought me to declarative programming languages. I am now investigating Datalog as a programming language. Bloom, Differential Datalog, MLog all inspire me. Is there a common ground? Check out at Mercylog :)"
   },
   {
     "objectID": "posts/datascript-python.html",
