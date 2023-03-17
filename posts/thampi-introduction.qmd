@@ -39,7 +39,7 @@ Data scientists(most of us, actually) want to focus on training their models. We
 Let’s use the Iris dataset provided within scikit-learn. Let’s create a new project `myproject`. We’ll use `scikit-learn` as an example but you could use any framework.
 
 #### Setup(Pip)
-```shell script
+```
 mkdir myproject && cd myproject
 virtualenv -p python3 venv
 source ./venv/bin/activate
@@ -54,7 +54,7 @@ pip freeze > requirements.txt
 #### Or … Setup(Conda)
 
 Note: This is one way of creating a conda environment. Please use the conventional way if you are comfortable in that style.
-```shell script
+```
 mkdir myproject && cd myproject
 # Create a  conda environment inside the directory myproject
 conda create --prefix=venv python=3.6.7
@@ -64,9 +64,10 @@ pip install numpy
 pip install scipy
 
 ```
+
 *IMPORTANT*: `thampi` only supports conda requirements files [crafted by hand](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#create-env-file-manually). So, let’s manually create a requirements file with the above dependencies as shown below and save it as `requirements.txt`. The versions will change but you get the idea.
 
-```yaml
+```
 name: thampi-tutorial
 dependencies:
   - thampi=0.1.0
@@ -81,7 +82,7 @@ dependencies:
 * For the s3 bucket, you can choose to have one bucket for all your thampi applications. Each project(model) is at a different prefix so as long as the projects have unique names, they won’t overwrite each other. If you aren’t confident of that, you could just give a different bucket for each thampi project.
 * Choose pip or conda according to your preference.
 
-```shell script
+```
 thampi init
 
 Welcome to Thampi!
@@ -110,7 +111,7 @@ A file zappa_settings.json has been created. If you made a mistake, delete it an
 
 Inside `myproject`, copy the following code into the file `train.py`
 
-```python
+```
 import numpy as np
 from sklearn import datasets
 from typing import Dict
@@ -151,7 +152,7 @@ if __name__ == '__main__':
 * The above code first trains the sklearn model as `knn`. To make the thampi web framework send the request data to the model, we wrap `knn` in `ThampiWrapper`, a class which implements the `thampi.Model` interface. The data sent to the serving endpoint will be passed by thampi to the `predict` method as `args`. Likewise, one can wrap models of other libraries as well. Ignore the `context` argument in the `predict` method for now. The `context` object sends in the Flask `application` object(and others in the future) which is probably not required for most of the use cases for now.
 
 And then at the terminal run
-```shell script
+```
 python train.py
 ```
 
@@ -161,17 +162,17 @@ This will create the model and save it locally using `thampi.save`. In thampi, l
 
 Now it’s time to upload the model to AWS Lambda. All you have to provide is the `requirements.txt` file along with the above trained `./models/iris-sklearn` directory.
 
-```shell script
+```
 thampi serve staging --model_dir=./models/iris-sklearn --dependency_file=./requirements.txt
 ```
 
 The `serve` command will use zappa internally to create or update a server endpoint. To see the endpoint, do
-```shell script
+```
 thampi info staging
 ```
 
 You’ll see something similar to:
-```shell script
+```
 {'url': 'https://8i7a6qtlri.execute-api.us-east-1.amazonaws.com/staging/mymodel/predict'}
 ```
 
@@ -181,14 +182,14 @@ Let’s hit the endpoint in the next section.
 
 You can do a curl like below where you replace `a_url` with the `url` that you receive from `thampi info staging`
 
-```shell script
+```
 curl -d '{"data": {"input": [5.9, 3.2, 4.8, 1.8]}}' -H "Content-Type: application/json" -X POST a_url
 ```
 
 `data` is a keyword here. Anything passed to `data` will be sent along to your model. The dictionary with the key `input` depends on your application. It could have been something else like `features` instead of `input` for e.g. If you remember from the `ThampiWrapper` code above, since we use `input`, our code reads the data as `args.get('input')`
 
 Output:
-```shell script
+```
 {
   "properties": {
     "instance_id": "9dbc56dd-936d-4dff-953c-8c22267ebe84",
@@ -204,7 +205,7 @@ Output:
 
 
 For convenience, you can also do:
-```shell script
+```
 thampi predict staging --data='{"input": [5.9, 3.2, 4.8, 1.8]}'
 ```
 
