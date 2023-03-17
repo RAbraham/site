@@ -2,50 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://RAbraham.github.io/site/index.html</loc>
-    <lastmod>2023-02-27T03:36:25.689Z</lastmod>
+    <lastmod>2023-03-17T00:16:12.812Z</lastmod>
   </url>
   <url>
     <loc>https://RAbraham.github.io/site/about.html</loc>
-    <lastmod>2023-02-27T03:36:26.005Z</lastmod>
+    <lastmod>2023-03-17T00:16:13.176Z</lastmod>
   </url>
   <url>
     <loc>https://RAbraham.github.io/site/posts/datascript-python.html</loc>
-    <lastmod>2023-02-27T03:36:26.585Z</lastmod>
-  </url>
-  <url>
-    <loc>https://RAbraham.github.io/site/posts/thampi-introduction.html</loc>
-    <lastmod>2023-02-27T03:36:27.037Z</lastmod>
+    <lastmod>2023-03-17T00:16:13.756Z</lastmod>
   </url>
   <url>
     <loc>https://RAbraham.github.io/site/posts/the-essence-of-datalog.html</loc>
-    <lastmod>2023-02-27T03:36:27.561Z</lastmod>
+    <lastmod>2023-03-17T00:16:14.300Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RAbraham.github.io/site/posts/thampi-introduction.html</loc>
+    <lastmod>2023-03-17T00:16:14.732Z</lastmod>
   </url>
   <url>
     <loc>https://RAbraham.github.io/site/posts/brython.html</loc>
-    <lastmod>2023-02-27T03:36:27.929Z</lastmod>
+    <lastmod>2023-03-17T00:16:15.084Z</lastmod>
   </url>
   <url>
     <loc>https://RAbraham.github.io/site/posts/purescript-twitter.html</loc>
-    <lastmod>2023-02-27T03:36:28.758Z</lastmod>
+    <lastmod>2023-03-17T00:16:15.832Z</lastmod>
   </url>
   <url>
     <loc>https://RAbraham.github.io/site/posts/introducing-mercylog.html</loc>
-    <lastmod>2023-02-27T03:36:29.590Z</lastmod>
+    <lastmod>2023-03-17T00:16:16.568Z</lastmod>
   </url>
   <url>
     <loc>https://RAbraham.github.io/site/posts/2021-12-13-tabbyql-design.html</loc>
-    <lastmod>2023-02-27T03:36:29.954Z</lastmod>
+    <lastmod>2023-03-17T00:16:16.892Z</lastmod>
   </url>
   <url>
     <loc>https://RAbraham.github.io/site/posts/purescript-serverless.html</loc>
-    <lastmod>2023-02-27T03:36:30.334Z</lastmod>
+    <lastmod>2023-03-17T00:16:17.256Z</lastmod>
   </url>
   <url>
     <loc>https://RAbraham.github.io/site/posts/2021-10-29-dsl-datalog-ohm-glue.html</loc>
-    <lastmod>2023-02-27T03:36:31.154Z</lastmod>
+    <lastmod>2023-03-17T00:16:18.076Z</lastmod>
   </url>
   <url>
     <loc>https://RAbraham.github.io/site/posts/fp-pyrsistent.html</loc>
-    <lastmod>2023-02-27T03:36:31.586Z</lastmod>
+    <lastmod>2023-03-17T00:16:18.504Z</lastmod>
   </url>
 </urlset>
