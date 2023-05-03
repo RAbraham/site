@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-05-02">
+<meta name="description" content="Raya. A thin wrapper over Ray for faster ML development">
+
+<title>Personal Site - Fast, Easy ML development on Ray</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Personal Site</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About me</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/RAbraham"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/TheCodePlumber"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Fast, Easy ML development on Ray</h1>
+                  <div>
+        <div class="description">
+          Raya. A thin wrapper over Ray for faster ML development
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">markdown</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 2, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#problem" id="toc-problem" class="nav-link active" data-scroll-target="#problem">Problem</a></li>
+  <li><a href="#existing-solutions" id="toc-existing-solutions" class="nav-link" data-scroll-target="#existing-solutions">Existing Solutions</a></li>
+  <li><a href="#my-experiment" id="toc-my-experiment" class="nav-link" data-scroll-target="#my-experiment">My Experiment</a>
+  <ul class="collapse">
+  <li><a href="#ray" id="toc-ray" class="nav-link" data-scroll-target="#ray">Ray</a></li>
+  <li><a href="#ray-clusters" id="toc-ray-clusters" class="nav-link" data-scroll-target="#ray-clusters">Ray Clusters:</a></li>
+  </ul></li>
+  <li><a href="#demo" id="toc-demo" class="nav-link" data-scroll-target="#demo">Demo</a>
+  <ul class="collapse">
+  <li><a href="#caching" id="toc-caching" class="nav-link" data-scroll-target="#caching">Caching</a></li>
+  </ul></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  <li><a href="#caveats" id="toc-caveats" class="nav-link" data-scroll-target="#caveats">Caveats</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="problem" class="level1">
+<h1>Problem</h1>
+<p>Data Scientists need to play with large models during development. Some challenges are:</p>
+<ul>
+<li><strong>Conflicting Dependencies</strong>: In applications with multiple models, one model may need Tensorflow 1.x (TF1) and another Tensorflow 2.x (TF2).</li>
+<li><strong>Long Load Time</strong>: These models take time to load and it’s slow to make a small change and run a script every time even if the model hasn’t changed.</li>
+<li><strong>Scalable and Distributed</strong>. Even for development, sometimes a laptop is too small too host and run multiple models. It would be convenient to be able to quickly iterate over code but run them on a remote powerful machine(with GPUs) or remote cluster created for experimentation.</li>
+<li><strong>Ease of Use</strong>: The gold standard would be to be able to create a Python class and use that in a way to solve all problems mentioned above.</li>
+<li><strong>Caching</strong>: Often models are ‘pure’. i.e.&nbsp;the same output for the same input. But naively, we still send prediction requests to the model and have to wait for the output which is time consuming. It would be great to use a cache and make that work in the solution that I propose</li>
+</ul>
+</section>
+<section id="existing-solutions" class="level1">
+<h1>Existing Solutions</h1>
+<p>The existing solution is to create an http endpoint within a docker container. But these have a learning curve and most data scientists are new to it.</p>
+</section>
+<section id="my-experiment" class="level1">
+<h1>My Experiment</h1>
+<p>I’m building <code>raya</code>(to make into a library soon if there is interest) to explore a dev experience with the help of Ray and Ray’s ‘Runtime Environments’ that’s easy for data scientists</p>
+<section id="ray" class="level2">
+<h2 class="anchored" data-anchor-id="ray">Ray</h2>
+<p><a href="https://github.com/ray-project/ray">Ray</a> is a distributed framework for building ML applications. The power of Ray is that the same code can run efficiently on a laptop(multi-core) but also scale to huge clusters just by changing an environment variable.</p>
+<p>One Ray concept is of a Ray Actor. For me, this is an simple alternative to creating a service endpoint(see Caveat: Ray Serve). For more details, refer to the Actor <a href="https://docs.ray.io/en/latest/ray-core/actors.html">documentation</a> but a short description is in the code is below. Adapting from their site</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ray</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">@ray.remote</span> <span class="co"># Specifies that this is a Ray Actor </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Counter(<span class="bu">object</span>):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.value <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> increment(<span class="va">self</span>, step):</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.value <span class="op">+=</span> step</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.value</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get_counter(<span class="va">self</span>):</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.value</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an actor object from this class.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># When run on a distributed cluster, this object could be anywhere</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># on the cluster, perhaps on a more powerful server.</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># The distributed complexity is hidden from us. Note the `remote`</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>counter <span class="op">=</span> Counter.remote()</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Call the actor. Compared to our typical Python objects,</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># all calls to the distibuted actor object 'counter' are</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># asynchronous, i.e. non-blocking. </span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># This is great for ML applications as often some operations can</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># take a lot of time and we can proceed with 'other work'.</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># `obj_ref` is a reference to the future output </span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># of the computation `counter.increment` </span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># which we can hold on to until we actually need the value</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>obj_ref <span class="op">=</span> counter.increment.remote(step<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>do_other_work() <span class="co"># dummy method. not implemented </span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Ok, now we are ready and we want the output of `counter.increment`</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ray.get(obj_ref)) <span class="co"># 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="ray-clusters" class="level2">
+<h2 class="anchored" data-anchor-id="ray-clusters">Ray Clusters:</h2>
+<p>Normally clusters are a remote set of machines. To run code on a remote cluster, the code has to be copied and sent to the Ray cluster in form of Ray jobs. Some of the info we need to provide are:</p>
+<ul>
+<li>the code folder</li>
+<li>requirements (i.e.&nbsp;installable by <code>pip</code>)</li>
+<li>(optional) environment variables</li>
+</ul>
+<p>These information can be provided to a <a href="https://docs.ray.io/en/latest/cluster/running-applications/job-submission/index.html">Ray Job</a> as Ray’s ‘Runtime Environment’(<a href="https://docs.ray.io/en/latest/ray-core/handling-dependencies.html">docs</a>) . We can create multiple isolated environments on the Ray cluster. e.g.&nbsp;one for TF1 and one for TF2. <code>raya</code> attempts to be a thin opinionated wrapper over it.</p>
+<p>Now, for running the Ray cluster on your laptop, the same concepts apply i.e.&nbsp;of packaging up the code folder and requirements etc. This in imho, is slightly slower than just setting up multiple virtual environments on your laptop with <code>python -m venv venv_TF1</code> and <code>python -m venv venv_TF2</code> for e.g.&nbsp;and trying to run different models but the multiple virtual environment locally idea does not work with Ray. But the Ray team has done some splendid engineering to only reload the changes on to the Ray cluster, so this may be good for practical purposes. See ‘Caching for speed’ <a href="https://www.anyscale.com/blog/handling-files-and-packages-on-your-cluster-with-ray-runtime-environments">here</a></p>
+<p>For <code>raya</code>, we focus on providing a separate runtime environment per Actor only</p>
+</section>
+</section>
+<section id="demo" class="level1">
+<h1>Demo</h1>
+<p>I’ll make a library soon but for now you can clone a demo repo. Also, I’m using the latest Python version which does not support Tensorflow 1.x so I’m simulating it by just using different 2.x versions. So TF1 is 2.10.0 and TF2 is 2.12.0</p>
+<pre class="shell"><code>export DEV_DIR=/path/to/your/folder
+cd $DEV_DIR
+git clone https://github.com/RAbraham/raya-trial
+cd raya-trial
+python3 -m venv venv &amp;&amp;  source venv/bin/activate &amp;&amp; pip install -r requirements.txt 
+# start ray cluster locally. Only once required
+ray stop; ray start --head --disable-usage-stats  </code></pre>
+<p>You’ll notice the following sub folders <code>tf1</code> and <code>tf2</code>. They could also have been different repos if required. There is ‘raya’ which will be made into a library…. soon :).</p>
+<p>Let’s start with <code>tf2</code>, a simpler version first:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tf2/actor.py</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> raya</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TF2Actor(raya.Actor):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"================= In TF2 init ===================================="</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> do(<span class="va">self</span>, name):</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"================= In TF2 do ===================================="</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"TF:</span><span class="sc">{</span>tf<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Above, one inherits from <code>raya.Actor</code> which does some admin work.</p>
+<p><code>tf2</code> requirements.txt</p>
+<pre><code>tensorflow==2.12.0</code></pre>
+<p>Let’s deploy this actor. We use a convenient cli tool called <code>invoke</code> to run my scripts</p>
+<pre class="shell"><code>invoke actor-deploy --class-path=$DEV_DIR/raya-trial/tf2/actor.py:TF2Actor --requirements=$DEV_DIR/raya-trial/tf2/requirements.txt</code></pre>
+<p><code>class-path</code> has the format <code>&lt;/path/to/file.py&gt;:&lt;ClassName&gt;</code> so that <code>raya</code> can dynamically load a simple Python class as a Ray Object. <code>requirements</code> allows us to create this actor in it’s own virtual environment on the Ray cluster.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># trial_tf2.py</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ray</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>ray.init(namespace<span class="op">=</span><span class="st">"serve"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>a2 <span class="op">=</span> ray.get_actor(namespace<span class="op">=</span><span class="st">"serve"</span>, name<span class="op">=</span><span class="st">"TF2Actor"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>ref <span class="op">=</span> a2.do.remote(name<span class="op">=</span><span class="st">"Rajiv"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> ray.get(ref)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result) <span class="co"># TF:2.12.0: Rajiv</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>By default, the actor is deployed to <code>namespace</code> <code>serve</code>. This is because these actors are normally used in conjunction with the Ray Serve http framework. Ray Serve acts as an external endpoint which forwards the requests to our actors in the distributed cluster. I think <code>serve</code> namespace is hardcoded inside the framework so I use that as the default. This can be changed in <code>actor-deploy</code></p>
+<p><strong>The actor is accessed by <code>name</code> <code>TF2Actor</code> i.e.&nbsp;the class name <strong>anywhere</strong> in the distributed Ray cluster :)</strong>. It’s</p>
+<ul>
+<li>isolated in it’s own environment so no worry of conflicting dependencies,</li>
+<li>long running as long as the cluster is up. Even if <code>trial_tf2.py</code> finishes execution, <code>TF2Actor</code> is still running on your cluster.</li>
+<li>scalable if deployed to a remote cluster with minimal effort</li>
+<li>and imo, easy to use :)</li>
+</ul>
+<p>Now, I hope you see why I use it as a simple alternative to http service endpoints. I don’t need to create endpoints for every component of code that needs process isolation and long life. I can just create <a href="https://docs.ray.io/en/latest/ray-core/actors/named-actors.html">Named Actors</a>. <code>name</code> is customizable at <code>actor-deploy</code></p>
+<p>Next actor is at folder <code>tf1</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tf1/actor.py</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> raya</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TF1Actor(raya.Actor):</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, folder):</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        weights <span class="op">=</span> Path(folder) <span class="op">/</span> <span class="st">"weights.txt"</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(weights.read_text())</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"================= In TF1 init ===================================="</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> act(<span class="va">self</span>, name):</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"================= In TF1 act ===================================="</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Version:</span><span class="sc">{</span>tf<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this variant, <code>__init__</code> is passed a folder. One can use it to pass data like model weights, configuration files and other data files. Here I’m passing some dummy weights as an example.</p>
+<p><code>tf1</code> requirements are different from <code>tf2</code> (ok, slightly different but just to prove a point)</p>
+<pre class="shell"><code>tensorflow==2.10.0</code></pre>
+<p>Now, let’s deploy this code. note the passing of <code>folder</code>.</p>
+<pre><code>invoke actor-deploy --class-path=$DEV_DIR/raya-trial/tf1/actor.py:TF1Actor --folder=$DEV_DIR/raya-trial/data --requirements=$DEV_DIR/raya-trial/tf1/requirements.txt"
+</code></pre>
+<p>Now we are ready for our experimentation. Try keeping actors like <code>TF1Actor</code> and <code>TF2Actor</code> as thin wrappers over model weights as they rarely change. That way, we don’t need to redeploy them very often.</p>
+<p>We can then experiment over them like in <code>trial.py</code></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># trial.py</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ray</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>ray.init(namespace<span class="op">=</span><span class="st">"serve"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> ray.get_actor(namespace<span class="op">=</span><span class="st">"serve"</span>, name<span class="op">=</span><span class="st">"TF1Actor"</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>a2 <span class="op">=</span> ray.get_actor(namespace<span class="op">=</span><span class="st">"serve"</span>, name<span class="op">=</span><span class="st">"TF2Actor"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>ref <span class="op">=</span> a1.act.remote(name<span class="op">=</span><span class="st">"Rajiv"</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> ray.get(ref)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>ref <span class="op">=</span> a2.do.remote(name<span class="op">=</span><span class="st">"Rajiv"</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> ray.get(ref)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If we run it:</p>
+<pre class="shell"><code>"python $DEV_DIR/raya-trial/trial.py"  </code></pre>
+<p>You should see</p>
+<pre class="shell"><code>TF:2.10.0: Rajiv
+TF:2.12.0: Rajiv</code></pre>
+<p><strong>I enjoyed making this</strong> :) (well, except for the one whole day I had to debug a crazy timing bug)</p>
+<section id="caching" class="level2">
+<h2 class="anchored" data-anchor-id="caching">Caching</h2>
+<p>Even if we have these models up as actors and they are long running, they mostly will have the same prediction for the same input. Since model predictions on CPUs can take seconds, why not cache the output? Only <code>pylru</code> seems to work in a Ray Actor. So..</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># caching_model/actor.py</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> raya</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pylru <span class="im">import</span> lrudecorator <span class="co"># &lt;--------------</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CachingModelActor(raya.Actor):</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"================= In Caching Model init ===================================="</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">@lrudecorator</span>(<span class="dv">100</span>) <span class="co"># &lt;-------------------</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> act(<span class="va">self</span>, name):</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="dv">5</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"================= In Caching Do ===================================="</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Hi </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>I put a sleep for 5 seconds to simulate a slow model. My trial file is:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># trial_caching.py</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ray</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>ray.init(namespace<span class="op">=</span><span class="st">"serve"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> ray.get_actor(namespace<span class="op">=</span><span class="st">"serve"</span>, name<span class="op">=</span><span class="st">"CachingModelActor"</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>st <span class="op">=</span> time.time()</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>ref <span class="op">=</span> a.act.remote(name<span class="op">=</span><span class="st">"Rajiv1"</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> ray.get(ref)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Time1:</span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> st<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>st <span class="op">=</span> time.time()</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>ref <span class="op">=</span> a.act.remote(name<span class="op">=</span><span class="st">"Rajiv2"</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> ray.get(ref)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Time2:</span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> st<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co"># This should return quickly</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>st <span class="op">=</span> time.time()</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>ref <span class="op">=</span> a.act.remote(name<span class="op">=</span><span class="st">"Rajiv1"</span>)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> ray.get(ref)</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Time1:</span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> st<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Running <code>"python $DEV_DIR/raya-trial/trial_caching.py</code> gives</p>
+<pre class="shell"><code>
+Hi Rajiv1
+Time1:5.054863452911377 # &lt;---------- returned in 5 secs
+Hi Rajiv2
+Time2:5.024395227432251
+Hi Rajiv1
+Time1:0.0022411346435546875 # &lt;--------------- returned in 0 secs</code></pre>
+<p>There are additional small features like <code>copy_env_vars</code> which will copy your local environment variables to the Ray Cluster</p>
+</section>
+</section>
+<section id="notes" class="level1">
+<h1>Notes</h1>
+<ul>
+<li>For production, Ray does not recommend using Runtime Environments(<a href="https://docs.ray.io/en/latest/ray-core/handling-dependencies.html">source</a>). It’s probably because it will pip install the libraries on first load which can take a few seconds. They recommend putting it all in a docker image so it’s fast to load. So that means, when it actually comes to moving to production and you have models with conflicting dependencies, you’ll have to create separate Ray clusters. I think this is easiest with Kubernetes. However, we currently use the above approach in production as we have retries on the client side and rolling upgrades.</li>
+</ul>
+</section>
+<section id="caveats" class="level1">
+<h1>Caveats</h1>
+<ul>
+<li><p>In the current implementation of <code>raya</code>, the method arguments have to be explicitly mentioned. e.g.&nbsp;like <code>name</code> in <code>args. ref = a2.do.remote(name="Rajiv")</code>. <code>args. ref = a2.do.remote("Rajiv")</code> won’t work</p></li>
+<li><p>Ray Serve: Though I used named actors as an alternative to an distrbuted endpoint, Ray has it’s own endpoint framework called Ray Serve. It’s feature rich and in production, that’s probably what one should use. However, it’s not strictly a conflict between Ray Serve and Named Actors. The way I differentiate right now is that if I want to expose an endpoint to external systems(both external and internal to the company not runninng on the same Ray cluster), I’ll use Ray Serve. But within a cluster, I’d like to explore named actors. However, I feel that at some point, I’ll have to move from named actors to serve components internally to a cluster too, mostly for rolling upgrades (or someone writes rolling upgrades for actors please!). So is this work all lost? I hope not, because one experiment I’d like to try is to transparently create a Ray Serve Object automatically from <code>raya.Actor</code> just like I have created a Ray named actor transparently right now.</p></li>
+<li><p>Ray runtime environments don’t give complete isolation unlike Docker. If we have conflicting binaries, then we have a problem. One workaround is to pack the binaries in a <code>bin</code> folder local to the project and use that in our ray code but I’m not sure if all OS dependencies can be handled that way. <strong>My number one wish list is to be able to run each job/named actor in it’s own container while still accessible in a ray cluster like conventional Ray Actors</strong>. <a href="https://www.anyscale.com/blog/how-ant-group-uses-ray-to-build-a-large-scale-online-serverless-platform">Ant Group</a> have done this for their internal Ray code in Java and I can’t wait to see it land for Python in Ray.</p></li>
+</ul>
+<p>Hope you liked this experiment! If you want to check out other similar stuff, check out my blog or my fledgling <a href="https://www.youtube.com/channel/UCAy2hLxc9-5qXraLdoCaCIQ">Youtube Channel</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
