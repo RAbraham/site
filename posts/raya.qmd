@@ -4,7 +4,7 @@ categories:
 date: '2023-05-02'
 description: Raya. A thin wrapper over Ray for faster ML development
 layout: post
-title: Fast, Easy ML development on  Ray
+title: Raya. Fast, Easy ML development on Ray
 toc: true
 
 ---
