@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><strong>Conflicting Dependencies</strong>: In applications with multiple models, one model may need Tensorflow 1.x (TF1) and another Tensorflow 2.x (TF2).</li>
 <li><strong>Long Load Time</strong>: These models take time to load and it’s slow to make a small change and run a script every time even if the model hasn’t changed.</li>
-<li><strong>Scalable and Distributed</strong>. Even for development, sometimes a laptop is too small too host and run multiple models. It would be convenient to be able to quickly iterate over code but run them on a remote powerful machine(with GPUs) or remote cluster created for experimentation.</li>
+<li><strong>Scalable and Distributed</strong>. Even for development, sometimes a laptop is too small to host and run multiple models. It would be convenient to be able to quickly iterate over code but run them on a remote powerful machine(with GPUs) or remote cluster created for experimentation.</li>
 <li><strong>Ease of Use</strong>: The gold standard would be to be able to create a Python class and use that in a way to solve all problems mentioned above.</li>
 <li><strong>Caching</strong>: Often models are ‘pure’. i.e.&nbsp;the same output for the same input. But naively, we still send prediction requests to the model and have to wait for the output which is time consuming. It would be great to use a cache and make that work in the solution that I propose</li>
 </ul>
