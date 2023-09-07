@@ -174,16 +174,16 @@ man("Abe")</code></pre>
 <p>Someone is a person if he is a man <code>person(X) :- man(X)</code></p>
 <p><code>person(X)</code> is a <code>derived</code> relation, as it is derived from some base relation <code>man(X)</code>. This is similar to a view in the database.</p>
 <p><code>X</code> is a <code>logical variable</code>. So <code>man(X)</code> could be used to refer to all <code>man</code> relations in the database.</p>
-<p><code>souchfpalwk ipython3 from typing import * from dataclasses import dataclass from pprint import pprint</code></p>
+<p><code>xzequcuwhxd ipython3 from typing import * from dataclasses import dataclass from pprint import pprint</code></p>
 <p>We can create a logical variable like this:</p>
-<p><code>souchfpalwk ipython3 @dataclass(frozen=True) class Variable:     name: str</code></p>
-<p><code>souchfpalwk ipython3 X = Variable('X')</code></p>
+<p><code>xzequcuwhxd ipython3 @dataclass(frozen=True) class Variable:     name: str</code></p>
+<p><code>xzequcuwhxd ipython3 X = Variable('X')</code></p>
 <p>A relation could be:</p>
 <p><code>man("Bob")</code></p>
 <p><code>parent("John", "Chester")</code> # John is a parent of Chester</p>
 <p>It could also be components of a rule e.g. <code>man(X)</code> or <code>person(X)</code> in <code>person(X) :- man(X)</code></p>
 <p>So a relation has a name(e.g.&nbsp;<code>parent</code>) and a list of attributes(e.g.&nbsp;<code>"John"</code> and <code>"Chester"</code> or <code>X</code>).</p>
-<p>```souchfpalwk ipython3 <span class="citation" data-cites="dataclass">@dataclass</span>(frozen=True, eq=True) class Relation: ““” man(“Bob) is Relation(”man”, (“Bob”,)) # (“Bob”,) is a single valued tuple parent(“John”, “Chester”) is Relation(“parent”, (“John”, “Chester”)) man(X) is Relation(“man”, (Variable(“X”),))</p>
+<p>```xzequcuwhxd ipython3 <span class="citation" data-cites="dataclass">@dataclass</span>(frozen=True, eq=True) class Relation: ““” man(“Bob) is Relation(”man”, (“Bob”,)) # (“Bob”,) is a single valued tuple parent(“John”, “Chester”) is Relation(“parent”, (“John”, “Chester”)) man(X) is Relation(“man”, (Variable(“X”),))</p>
 <pre><code>"""
 name: str
 attributes: Tuple</code></pre>
@@ -223,10 +223,10 @@ woman("Abby")</code></pre>
 <h2 class="anchored" data-anchor-id="simple-relation-query">Simple Relation Query</h2>
 <p>+++</p>
 <p>The simplest query is to find a matching relation. Taking the above example, let’s code that up in Python.</p>
-<p><code>souchfpalwk ipython3 X = Variable('X') abe = Relation("man", ("Abe",)) bob = Relation("man", ("Bob",)) abby = Relation("woman", ("Abby",)) database = {abe, bob, abby} no_rules = []  query = Relation("man", (X,))</code></p>
+<p><code>xzequcuwhxd ipython3 X = Variable('X') abe = Relation("man", ("Abe",)) bob = Relation("man", ("Bob",)) abby = Relation("woman", ("Abby",)) database = {abe, bob, abby} no_rules = []  query = Relation("man", (X,))</code></p>
 <p>For some function <code>run_simplest</code>, I expect: <code>assert run_simplest(database, no_rules, query) == {abe, bob}</code></p>
 <p>The simplest run would iterate through all the facts and filter those facts that match the query by relation name.</p>
-<p>```souchfpalwk ipython3 def name_match(fact: Relation, query: Relation) -&gt; bool: return fact.name == query.name</p>
+<p>```xzequcuwhxd ipython3 def name_match(fact: Relation, query: Relation) -&gt; bool: return fact.name == query.name</p>
 <p>def filter_facts(database: Set[Relation], query: Relation, match: Callable) -&gt; Set[Relation]: return {fact for fact in database if match(fact, query)}</p>
 <p>def run_simplest(database: Set[Relation], rules: List[Rule], query: Relation) -&gt; Set[Relation]: return filter_facts(database, query, name_match)</p>
 <p>assert run_simplest(database, no_rules, query) == {abe, bob}</p>
@@ -260,7 +260,7 @@ database = {
 }</code></pre>
 <p>Now, to the implementation. For a query to match, an argument at position N in the query should match the argument at position N in the fact. For e.g <code>assert query_variable_match(parent("A", "Bob"), parent(X, "Bob") ) == True</code></p>
 <p>Logical variables are special. They get a free pass like <code>X</code> above.</p>
-<p>```souchfpalwk ipython3 def query_variable_match(fact: Relation, query: Relation) -&gt; bool: if fact.name != query.name: return False</p>
+<p>```xzequcuwhxd ipython3 def query_variable_match(fact: Relation, query: Relation) -&gt; bool: if fact.name != query.name: return False</p>
 <pre><code># TODO: zip is duplicated?
 for query_attribute, fact_attribute in zip(query.attributes, fact.attributes):
     if not isinstance(query_attribute, Variable) and query_attribute != fact_attribute:
@@ -288,8 +288,8 @@ man("George")
 animal("Tiger")</code></pre>
 <p>Query:</p>
 <p><code>human(X)</code> # Find me all humans</p>
-<p>The query should return: <code>jazlfkxyulhxuvefwxtpxkrmtxqlvwu</code></p>
-<p>```souchfpalwk ipython3 man = lambda x: Relation(“man”, (x,)) animal = lambda x: Relation(“animal”, (x,)) human = lambda x: Relation(“human”, (x,)) X = Variable(“X”)</p>
+<p>The query should return: <code>gflthbnfkcyzaaahldznajuvknmgzmd</code></p>
+<p>```xzequcuwhxd ipython3 man = lambda x: Relation(“man”, (x,)) animal = lambda x: Relation(“animal”, (x,)) human = lambda x: Relation(“human”, (x,)) X = Variable(“X”)</p>
 <p>head = human(X) body = [man(X)] human_rule = Rule(head, body) # No pun was intended database = { man(“Abe”), man(“Bob”), animal(“Tiger”) } rules = [human_rule] query = human(X)</p>
 <pre><code>
 For each rule, for each relation in it's body, if it matches with any of the facts in the database,
@@ -318,9 +318,9 @@ def evaluate_rule_simple(rule: Rule, database: Set[Relation]) -&gt; Set[Relation
     # i.e. in the `zip` inside `match_relation_and_database`. Thank God.
     return {Relation(rule.head.name, tuple(attributes.values())) for attributes in all_matches}</code></pre>
 <p>This <code>evaluate_rule_simple</code> can be passed to a function which will <code>evaluate</code> it on each rule for the database to generate the final knowledge base.</p>
-<p><code>souchfpalwk ipython3 def generate_knowledgebase(evaluate: Callable, database: Set[Relation], rules: List[Rule]):     knowledge_base = database      for rule in rules:         evaluation = evaluate(rule, database)         knowledge_base = knowledge_base.union(evaluation)     return knowledge_base</code></p>
+<p><code>xzequcuwhxd ipython3 def generate_knowledgebase(evaluate: Callable, database: Set[Relation], rules: List[Rule]):     knowledge_base = database      for rule in rules:         evaluation = evaluate(rule, database)         knowledge_base = knowledge_base.union(evaluation)     return knowledge_base</code></p>
 <p>And finally, we have</p>
-<p>```souchfpalwk ipython3 def run_rule_simple(database: Set[Relation], rules: List[Rule], query: Relation): knowledge_base = generate_knowledgebase(evaluate_rule_simple, database, rules) return filter_facts(knowledge_base, query, query_variable_match)</p>
+<p>```xzequcuwhxd ipython3 def run_rule_simple(database: Set[Relation], rules: List[Rule], query: Relation): knowledge_base = generate_knowledgebase(evaluate_rule_simple, database, rules) return filter_facts(knowledge_base, query, query_variable_match)</p>
 </section>
 <section id="test-cases" class="level1">
 <h1>Test Cases</h1>
@@ -362,7 +362,7 @@ query = father(X, Y)</code></pre>
 <p>Let’s first code up this common value logic as <code>has_common_value</code>. We also have to start pairing variables to values e.g.&nbsp;<code>{'X': 'Abe'}</code></p>
 <p>This combination below:</p>
 <p><code>has_common_value({ X: 'Abe', Y: 'Bob'}, {X: 'Abe'})</code> should return <code>True</code></p>
-<p><code>souchfpalwk ipython3 def has_common_value(attrs1: Dict[Variable, Any], attrs2: Dict[Variable, Any]) -&gt; bool:     common_vars = set(attrs1.keys()).intersection(set(attrs2.keys()))     return all([attrs1[c] == attrs2[c] for c in common_vars])</code></p>
+<p><code>xzequcuwhxd ipython3 def has_common_value(attrs1: Dict[Variable, Any], attrs2: Dict[Variable, Any]) -&gt; bool:     common_vars = set(attrs1.keys()).intersection(set(attrs2.keys()))     return all([attrs1[c] == attrs2[c] for c in common_vars])</code></p>
 <p>Once we have that, we know that <code>match_relation_and_database</code> will return as before, a list of body attributes which each match a fact in the database. It’s time to conjunct. We may get some input like:</p>
 <pre><code>[[{X: 'Bob', Y: 'Carl'},    # &lt;= All facts that match parent(X,Y)
   {X: 'Beatrice', Y: 'Carl'},
@@ -376,7 +376,7 @@ query = father(X, Y)</code></pre>
  {X: 'Abe', Y: 'Bob'},
  {X: 'Bob', Y: 'Connor'}]</code></pre>
 <p>Just hacking it for now.</p>
-<p>```souchfpalwk ipython3 def conjunct(body_attributes: List[List[Dict]]) -&gt; List: # TODO: Does not cover body lengths greater than 2 result = [] if len(body_attributes) == 1: return body_attributes[0]</p>
+<p>```xzequcuwhxd ipython3 def conjunct(body_attributes: List[List[Dict]]) -&gt; List: # TODO: Does not cover body lengths greater than 2 result = [] if len(body_attributes) == 1: return body_attributes[0]</p>
 <pre><code>attr1 = body_attributes[0]
 attr2 = body_attributes[1]
 for a1 in attr1:
@@ -393,7 +393,7 @@ e.g. for a rule `relation1(X) :- relation2(X,Y), relation3(X)`, `relation1` just
 def rule_attributes(relation: Relation, attr: Dict[Variable, Any]) -&gt; Tuple:
     return tuple([attr[a] for a in relation.attributes])</code></pre>
 <p>So the final <code>evaluate</code> function becomes</p>
-<p>```souchfpalwk ipython3 def evaluate_logical_operators_in_rule(rule: Rule, database: List[Relation]) -&gt; Set[Relation]: body_attributes = []</p>
+<p>```xzequcuwhxd ipython3 def evaluate_logical_operators_in_rule(rule: Rule, database: List[Relation]) -&gt; Set[Relation]: body_attributes = []</p>
 <pre><code>for relation in rule.body:
     _attributes = match_relation_and_database(database, relation)
     body_attributes.append(_attributes)
@@ -409,7 +409,7 @@ Let's test that it works for single relation bodies, preventing any regressions.
 simple_conjunct_rules = [Rule(human(X), {man(X)})]
 assert run_logical_operators(database, simple_conjunct_rules, human(X)) == {human("Abe"), human("Bob")}</code></pre>
 <p>And our final test</p>
-<p><code>souchfpalwk ipython3 assert run_logical_operators(database, rules, query) == {father("Abe", "Bob"), father("Bob", "Carl"), father("Bob", "Connor")}</code></p>
+<p><code>xzequcuwhxd ipython3 assert run_logical_operators(database, rules, query) == {father("Abe", "Bob"), father("Bob", "Carl"), father("Bob", "Connor")}</code></p>
 <section id="logical-or-query" class="level2">
 <h2 class="anchored" data-anchor-id="logical-or-query">Logical OR Query</h2>
 <p>+++</p>
@@ -417,7 +417,7 @@ assert run_logical_operators(database, simple_conjunct_rules, human(X)) == {huma
 <pre><code>human(X) :- man(X)
 human(X) :- woman(X)</code></pre>
 <p>In Python, given:</p>
-<p>```souchfpalwk ipython3 database = { animal(“Tiger”), man(“Abe”), man(“Bob”), woman(“Abby”), woman(“Beatrice”) }</p>
+<p>```xzequcuwhxd ipython3 database = { animal(“Tiger”), man(“Abe”), man(“Bob”), woman(“Abby”), woman(“Beatrice”) }</p>
 <p>man_rule = Rule(human(X), {man(X)}) woman_rule = Rule(human(X), {woman(X)}) rules = [man_rule, woman_rule] query = human(X)</p>
 <p>assert run_logical_operators(database, rules, query) == { human(“Abe”), human(“Bob”), human(“Abby”), human(“Beatrice”) }</p>
 <pre><code>
@@ -535,7 +535,7 @@ ancestor("A", "D")
 No New Facts</code></pre>
 <p>Aha! There are no more new inferred facts. If we do another pass on <code>KnowledgeBase4</code>, it would come out the same. So we can stop!</p>
 <p>So the logic to stop would be: Take the output of each iteration. If it matches the input to that iteration, stop(as we did not learn any new inferred facts). If not a match, then run another iteration. Let’s call this method <code>iterate_until_no_change</code>.</p>
-<p>```souchfpalwk ipython3 def iterate_until_no_change(transform: Callable, initial_value: Set) -&gt; Set: a_input = initial_value</p>
+<p>```xzequcuwhxd ipython3 def iterate_until_no_change(transform: Callable, initial_value: Set) -&gt; Set: a_input = initial_value</p>
 <pre><code>while True:
     a_output = transform(a_input)
     if a_output == a_input:
@@ -550,7 +550,7 @@ def run_recursive(database: Set[Relation], rules: List[Rule], query: Relation):
     knowledgebase = iterate_until_no_change(transformer, database)
     return filter_facts(knowledgebase, query, query_variable_match)</code></pre>
 <p>Let’s define the query</p>
-<p>```souchfpalwk ipython3 query = ancestor(X, Y)</p>
+<p>```xzequcuwhxd ipython3 query = ancestor(X, Y)</p>
 <p>recursive_result = run_recursive(database, rules, query)</p>
 <p>expected_result = { ancestor(“A”, “B”), ancestor(“B”, “C”), ancestor(“C”, “D”), ancestor(“AA”, “BB”), ancestor(“BB”, “CC”), ancestor(“A”, “C”), ancestor(“B”, “D”), ancestor(“AA”, “CC”), ancestor(“A”, “D”) }</p>
 <p>assert recursive_result == expected_result, f”{recursive_result} not equal to {expected_result}”</p>
@@ -563,14 +563,14 @@ query = ancestor("AA", "C")
 
 assert run_recursive(database, rules, query) == set()</code></pre>
 <p>What if I want to find all ancestors of <code>C</code>?</p>
-<p><code>souchfpalwk ipython3 query = ancestor(X, "C") assert run_recursive(database, rules, query) == {ancestor("A", "C"), ancestor("B", "C")}</code></p>
+<p><code>xzequcuwhxd ipython3 query = ancestor(X, "C") assert run_recursive(database, rules, query) == {ancestor("A", "C"), ancestor("B", "C")}</code></p>
 <p>What if I want to find who all are the descendants of <code>AA</code>. Again, use the same query but just reverse the order!</p>
-<p><code>souchfpalwk ipython3 query = ancestor("AA", X) assert run_recursive(database, rules, query) == {ancestor("AA", "BB"), ancestor("AA", "CC")}</code></p>
+<p><code>xzequcuwhxd ipython3 query = ancestor("AA", X) assert run_recursive(database, rules, query) == {ancestor("AA", "BB"), ancestor("AA", "CC")}</code></p>
 <p>Finally, who are the intermediates between <code>A</code> and <code>D</code> i.e.&nbsp;<code>B</code> and <code>C</code>.</p>
 <p><code>Z</code> is an intermediate of <code>X</code> and <code>Y</code> if <code>X</code> is it’s ancestor and <code>Y</code> is its descendant.</p>
 <pre><code>intermediate(Z, X, Y) :- ancestor(X, Z), ancestor(Z, Y)</code></pre>
 <p>In Python,</p>
-<p>```souchfpalwk ipython3 intermediate = lambda intermediate, start, end: Relation(“intermediate”, (intermediate, start, end)) intermediate_head = intermediate(Z, X, Y) intermediate_body = {ancestor(X, Z), ancestor(Z, Y)} intermediate_rule = Rule(intermediate_head, intermediate_body)</p>
+<p>```xzequcuwhxd ipython3 intermediate = lambda intermediate, start, end: Relation(“intermediate”, (intermediate, start, end)) intermediate_head = intermediate(Z, X, Y) intermediate_body = {ancestor(X, Z), ancestor(Z, Y)} intermediate_rule = Rule(intermediate_head, intermediate_body)</p>
 <p>rules = [ancestor_rule_base, ancestor_rule_recursive, intermediate_rule] query = intermediate(Z, “A”, “D”)</p>
 <p>assert run_recursive(database, rules, query) == {intermediate(“B”, “A”, “D”), intermediate(“C”, “A”, “D”)} ```</p>
 <p>+++</p>
