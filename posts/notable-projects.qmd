@@ -2,9 +2,9 @@
 categories:
 - markdown
 date: '2023-09-06'
-description: Highlight of Notable projects during my career 
+description: Highlight of Notable projects I liked working on 
 layout: post
-title: Notable projects of my career
+title: Notable projects of interest 
 toc: true
 
 ---
