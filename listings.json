@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/notable-projects.html",
       "/posts/raya.html",
       "/posts/2021-12-13-tabbyql-design.html",
       "/posts/2021-10-29-dsl-datalog-ohm-glue.html",
