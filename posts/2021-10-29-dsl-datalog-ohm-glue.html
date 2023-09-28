@@ -203,7 +203,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="motivation" class="level1">
 <h1>Motivation</h1>
-<p>I think the time has come for me to explore creating <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain specific languages</a>(DSL) to build software systems. I feel the benefits are: * <strong>write less code</strong>. I hope to generate the required code from the DSL code. * <strong>write code readable by domain experts</strong>. I hope to write executable code in that DSL that looks very similar to what an end user/domain expert would understand. Almost like writing English with some structure so that it can be executed. This enables fruitful and rapid interaction with domain experts/end users very early in the project preventing miscommunication errors. * <strong>decouple business logic from implementation</strong>. I hope to capture the business rules/business workflows at the level of the DSLs. This will allow me to easily change the implementation underneath without having to change the DSL code that captures the complex business logic. For e.g.&nbsp;I might initially generate simple Python code from my DSL but later I may generate performant code using multiprocessing libraries or even SQL code, all without changing my code written in the DSL. I just change the compiler.</p>
+<p>I think the time has come for me to explore creating <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain specific languages</a>(DSL) to build software systems. I feel the benefits are:</p>
+<ul>
+<li><strong>write less code</strong>: I hope to generate the required code from the DSL code.</li>
+<li><strong>write code readable by domain experts</strong>. I hope to write executable code in that DSL that looks very similar to what an end user/domain expert would understand. Almost like writing English with some structure so that it can be executed. This enables fruitful and rapid interaction with domain experts/end users very early in the project preventing miscommunication errors.<br>
+</li>
+<li><strong>decouple business logic from implementation</strong>. I hope to capture the business rules/business workflows at the level of the DSLs. This will allow me to easily change the implementation underneath without having to change the DSL code that captures the complex business logic. For e.g.&nbsp;I might initially generate simple Python code from my DSL but later I may generate performant code using multiprocessing libraries or even SQL code, all without changing my code written in the DSL. I just change the compiler.</li>
+</ul>
 <p>I hope to write a bigger post later explaining why I think DSLs are something worth exploring (ask me if you are interested.)</p>
 </section>
 <section id="problem-statement" class="level1">
@@ -254,23 +260,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>abe   bob  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now, I really like a language called <a href="https://en%20.wikipedia.org/wiki/Datalog">Datalog</a>. I have written an outdated but still understandable post here (raj: I’ll post a link soon). It’s an alternative to SQL. I even wrote a prototype Python library named <a href="https://github%20.com/RAbraham/mercylog">mercylog</a> to be able to execute Datalog like programs in Python.</p>
 <p>Let’s translate the above SQL to a simple variant of Datalog.</p>
-<pre><code>parent(abe, bob).
-parent(abby, bob).
-parent(bob, carl).
-parent(bob, connor).
-parent(beatrice, carl).
-man(abe).
-man(bob).
-woman(abby).
-woman(beatrice). &lt;=========== This and above are facts
-father(X, Y) :- man(X), parent(X, Y). &lt;============ This is a rule
-father(X, Y).  &lt;============= This is my query. Should be same result as SQL
-
-X       Y 
------------  
-bob   carl  
-bob   connor  
-abe   bob  </code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>parent(abe, bob).</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>parent(abby, bob).</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>parent(bob, carl).</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>parent(bob, connor).</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>parent(beatrice, carl).</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>man(abe).</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>man(bob).</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>woman(abby).</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>woman(beatrice). <span class="op">&lt;===========</span> This <span class="kw">and</span> above are facts</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>father(X, Y) :<span class="op">-</span> man(X), parent(X, Y). <span class="op">&lt;============</span> This <span class="kw">is</span> a rule</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>father(X, Y).  <span class="op">&lt;=============</span> This <span class="kw">is</span> my query. Should be same result <span class="im">as</span> SQL</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>X       Y </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="op">-----------</span>  </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>bob   carl  </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>bob   connor  </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>abe   bob  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In Datalog, rows in a table are called facts. <code>X</code> and <code>Y</code> are special logic variables which are different from our regular Python variables. They are only relevant within a statement and are used to link data across relations. e.g.&nbsp;<code>X</code> signifies the same person in <code>father</code>, <code>man</code> and <code>parent</code> in the single rule above. (raj: I’ll post a link soon to explain more). <code>parent</code>, <code>man</code>, <code>woman</code> are called <code>relation</code>s just as in regular databases. Code is written as <code>rule</code>s. You can read the rule above as ‘X is a father of Y if X is man and X is the parent of Y’. The query is to find me all father and child combinations i.e.&nbsp;<code>father(X, Y)</code></p>
 <p>Note the schema creation step and explicit columns names(i.e. <code>name</code>, <code>child</code> for <code>parent</code>) are missing in this simplistic example of a Datalog variant(there are many of them). This is not saying that oh look, Datalog has so much less code than SQL so it’s better. In fact the opposite, I want explicit schema creation etc. in Datalog but that’s another project.</p>
 <p>Now, I have a prototype Python library called <code>mercylog</code>. Similar code there would be</p>
@@ -339,59 +345,58 @@ abe   bob  </code></pre>
 </figure>
 </div>
 <p>Let’s start with the smallest Ohm grammar</p>
-<pre class="shell"><code>datalog {
- Program = Statement+
-}</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>datalog {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a> Program <span class="op">=</span> Statement<span class="op">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This is just saying that my Datalog code is a <code>Program</code> with one or more <code>Statement</code>s. The <code>+</code> indicates one or more.</p>
 <p>What’s a <code>Statement</code>? Well, in the simplest case, we have a fact, e.g.&nbsp;<code>parent(abe, bob).</code> and then we have a rule e.g.&nbsp;<code>father (X, Y) :- man(X), parent(X, Y).</code>. I see a sub pattern there as <code>relation (Variable1, Variable2)</code>. I’ll call this a <code>Clause</code> and then I’ll worry later how to parse it. So the rule becomes <code>Clause :- Clause, Clause.</code> or even <code>Clause :- Clause, Clause, Clause..</code>. We have to capture the pattern <code>, Clause</code> 0 or many times. The way we do it in Ohm is like this.</p>
-<pre class="shell"><code>Statement =
-    Clause "."                          -- fact
-  | Clause ":-" Clause CommaClause* "." -- rule
-
-CommaClause = "," Clause</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Statement <span class="op">=</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    Clause <span class="st">"."</span>                          <span class="op">--</span> fact</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> Clause <span class="st">":-"</span> Clause CommaClause<span class="op">*</span> <span class="st">"."</span> <span class="op">--</span> rule</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>CommaClause <span class="op">=</span> <span class="st">","</span> Clause</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>-- fact</code> and <code>-- rule</code> look like comments but they are more than that. I’ll explain later below.</p>
 <p>Cool, what’s a Clause? It’s like <code>relation(Variable1, Variable2,..,VariableN)</code>. I’m going to worry about the ‘variable’ number of variables later. For now, I’ll call it</p>
-<pre class="shell"><code>Clause = Relation "(" IDList ")"</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Clause <span class="op">=</span> Relation <span class="st">"("</span> IDList <span class="st">")"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Ok, What’s a <code>Relation</code>? It’s a lower case string e.g.&nbsp;<code>father</code> and it has to start with a lower case letter(a Datalog convention). We need to capture single letter relations e.g <code>a</code> in <code>a(X,Y)</code> or bigger relations e.g.&nbsp;<code>father</code></p>
-<pre class="shell"><code>Relation = LowerCaseIdent
-LowerCaseIdent = "a" .. "z" identRest*
-identRest = "0-9" | "_" | "A" .. "Z" | "a" .. "z"</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Relation <span class="op">=</span> LowerCaseIdent</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>LowerCaseIdent <span class="op">=</span> <span class="st">"a"</span> .. <span class="st">"z"</span> identRest<span class="op">*</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>identRest <span class="op">=</span> <span class="st">"0-9"</span> <span class="op">|</span> <span class="st">"_"</span> <span class="op">|</span> <span class="st">"A"</span> .. <span class="st">"Z"</span> <span class="op">|</span> <span class="st">"a"</span> .. <span class="st">"z"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>identRest</code> captures the pattern that the rest of the identifier can can either be a number, underscore or upper case or lower case letters.</p>
 <p>Now, <code>IDList</code>. You’ll notice a trend here with CommaClause and IDList. It has the same feeling like designing functions. Often, I’ll write pseudocode on how I want a function to look and I’ll design the subroutines without actually implementing them. Just the subroutine calls. Once I like what I see, I’ll then go ahead and implement each subroutine. It feels similar here.</p>
 <p><code>IDList</code> has the same feel like <code>Clause</code>, doesn’t it?</p>
-<pre class="shell"><code>IDList = ID CommaID*
-CommaID = "," ID</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>IDList <span class="op">=</span> ID CommaID<span class="op">*</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>CommaID <span class="op">=</span> <span class="st">","</span> ID</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>An <code>ID</code> is going to be either a literal(or constant) like <code>abe</code> in <code>man(abe)</code> or a variable like <code>X</code> and <code>Y</code> in <code>father(X, Y)</code>. A variable starts with a capital letter as per Datalog convention.</p>
-<pre class="shell"><code>
-ID = Variable | Literal
-Variable = CapitalizedIdent
-Literal = LowerCaseIdent 
-#LowerCaseIdent  and identRest were already explained before
-CapitalizedIdent = "A" .. "Z" identRest*
-</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ID <span class="op">=</span> Variable <span class="op">|</span> Literal</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>Variable <span class="op">=</span> CapitalizedIdent</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>Literal <span class="op">=</span> LowerCaseIdent </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#LowerCaseIdent  and identRest were already explained before</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>CapitalizedIdent <span class="op">=</span> <span class="st">"A"</span> .. <span class="st">"Z"</span> identRest<span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>So there you go, I think that’s it. Let’s see the whole ohm grammar file.</p>
-<pre class="shell"><code>datalog {
-Program = Statement+
-Statement =
-    Clause "."                          -- fact
-  | Clause ":-" Clause CommaClause* "." -- rule
-
-Clause = Relation "(" IDList ")"
-CommaClause = "," Clause
-
-Relation = LowerCaseIdent
-IDList = ID CommaID*
-ID = Variable | Literal
-CommaID = "," ID
-
-Variable = CapitalizedIdent
-Literal = LowerCaseIdent
-
-LowerCaseIdent = "a" .. "z" identRest*
-CapitalizedIdent = "A" .. "Z" identRest*
-
-identRest = "0-9" | "_" | "A" .. "Z" | "a" .. "z"
-}</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>datalog {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>Program <span class="op">=</span> Statement<span class="op">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>Statement <span class="op">=</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    Clause <span class="st">"."</span>                          <span class="op">--</span> fact</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> Clause <span class="st">":-"</span> Clause CommaClause<span class="op">*</span> <span class="st">"."</span> <span class="op">--</span> rule</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>Clause <span class="op">=</span> Relation <span class="st">"("</span> IDList <span class="st">")"</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>CommaClause <span class="op">=</span> <span class="st">","</span> Clause</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>Relation <span class="op">=</span> LowerCaseIdent</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>IDList <span class="op">=</span> ID CommaID<span class="op">*</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>ID <span class="op">=</span> Variable <span class="op">|</span> Literal</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>CommaID <span class="op">=</span> <span class="st">","</span> ID</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>Variable <span class="op">=</span> CapitalizedIdent</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>Literal <span class="op">=</span> LowerCaseIdent</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>LowerCaseIdent <span class="op">=</span> <span class="st">"a"</span> .. <span class="st">"z"</span> identRest<span class="op">*</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>CapitalizedIdent <span class="op">=</span> <span class="st">"A"</span> .. <span class="st">"Z"</span> identRest<span class="op">*</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>identRest <span class="op">=</span> <span class="st">"0-9"</span> <span class="op">|</span> <span class="st">"_"</span> <span class="op">|</span> <span class="st">"A"</span> .. <span class="st">"Z"</span> <span class="op">|</span> <span class="st">"a"</span> .. <span class="st">"z"</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="glue" class="level2">
 <h2 class="anchored" data-anchor-id="glue">Glue</h2>
@@ -399,61 +404,58 @@ identRest = "0-9" | "_" | "A" .. "Z" | "a" .. "z"
 <p>However, <a href="https://guitarvydas.github.io/">Paul Tarvydas</a> found that he was writing a lot of boilerplate code and decided to ….. write another DSL for it! It’s called Glue.</p>
 <p>CAUTION: Glue is a prototype and does not cover all edge cases.</p>
 <p>The way Glue works is you take all the symbols in your Ohm grammar e.g.&nbsp;<code>Clause</code>, <code>ID</code> and write a corresponding piece of JavaScript code to be generated. Glue also simplifies it in the way that you can just write the string of code(Python in my case) that you want to generate. Let’s start with a dummy example.</p>
-<pre class="shell"><code>Program [@Statement] = [[ ${Statement} ]]</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Program [<span class="op">@</span>Statement] <span class="op">=</span> [[ ${Statement} ]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Here, <code>Program</code> and <code>Statement</code> are from the Ohm grammar above. Since we have multiple statements, we use <code>@</code> to indicate that. The code to be generated is between <code>[[</code> and <code>]]</code>. And we refer to the code with JavaScript interpolation code <code>${}</code>. What is the value of <code>Statement</code> above? Well, it’ll be populated ‘somehow’ by Ohm with the values from the rest of the grammar.</p>
 <p>I think the above example was too easy for you :) . Let’s show you what I have to actually do.</p>
 <p>If you look at my required Python Mercylog code above, I need to first generate some generic, wrapper like Python code like <code>mercylog</code> import statements and initialization no matter what the Datalog code is to be generated.</p>
-<pre class="shell"><code>
-from mercylog import R, V, and_, db
-fb = [ .. statements ..] # refer to facts_rules_query above 
-ds = db() 
-result = ds(fb)
-print(result.df()) </code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mercylog <span class="im">import</span> R, V, and_, db</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>fb <span class="op">=</span> [ .. statements ..] <span class="co"># refer to facts_rules_query above </span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> db() </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> ds(fb)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.df()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The way we specify that in Glue is:</p>
-<pre class="shell"><code>Program [@Statement] = [[from mercylog import R, V, and_, db\nfb = \[ ${Statement}\] \nds = db() \nresult = ds(fb) \nprint(result.df()) ]]</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Program [<span class="op">@</span>Statement] <span class="op">=</span> [[<span class="im">from</span> mercylog <span class="im">import</span> R, V, and_, db\nfb <span class="op">=</span> \[ ${Statement}\] \nds <span class="op">=</span> db() \nresult <span class="op">=</span> ds(fb) \nprint(result.df()) ]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>It may not look very clean and Paul may have some way to improve on this but I just wanted to give you an idea.</p>
 <p>We need to escape special characters in Glue. For e.g., I have to use <code>[]</code> for Python but that means something in Glue too so I have to escape it e.g.&nbsp;<code>\[</code></p>
 <p>Where do we get statements from? Well, there was something I didn’t mention before, that it’s time to talk about now. Notice the <code>-- rule</code> and <code>-- fact</code> in our Ohm grammar?</p>
-<pre class="shell"><code>Statement =
-    Clause "."                          -- fact
-  | Clause ":-" Clause CommaClause* "." -- rule
-</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Statement <span class="op">=</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    Clause <span class="st">"."</span>                          <span class="op">--</span> fact</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> Clause <span class="st">":-"</span> Clause CommaClause<span class="op">*</span> <span class="st">"."</span> <span class="op">--</span> rule</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>They look like comments but they are called <code>case labels</code> in Ohm. They are a way to specify different execution paths for Glue (actually, for Ohm, which Glue uses underneath). So we have two entries in Glue for Statement, <code>Statement_fact</code> and <code>Statement_rule</code></p>
 <p>Note, that the number of parameters for e.g. <code>Statement_fact</code> match closely with how it’s grammar is specified. Using <code>k</code> in <code>kperiod</code> is just a convention, I think, to indicate that it’s a literal unlike the others.</p>
 <p>If it’s a fact, I just have to add it to the list <code>fb</code>. The code containing <code>fb</code> is generated above for <code>Program  [@statement]</code>. So I take <code>clause</code> which will be generated later and just add a <code>,</code> to it, as I’m adding it to a Python list which wants a comma between list elements. For rules, I have to convert <code>Statement_rule</code> to the corresponding <code>mercylog  statement</code> i.e.&nbsp;<code>clause1 &lt;&lt; and_(...)</code></p>
-<pre class="shell"><code>Statement_fact [clause kperiod] = [[${clause},\n]]
-Statement_rule [clause1 kcolondash clause @commaclause kdot] = [[${clause1} &lt;&lt; and_(${clause}${commaclause}),\n]]
-</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Statement_fact [clause kperiod] <span class="op">=</span> [[${clause},\n]]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>Statement_rule [clause1 kcolondash clause <span class="op">@</span>commaclause kdot] <span class="op">=</span> [[${clause1} <span class="op">&lt;&lt;</span> and_(${clause}${commaclause}),\n]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>I think the rest of the code follows the same principles explained above.</p>
 <p>Here’s the final Glue Code.</p>
-<pre class="shell"><code>Program [@Statement] = [[from mercylog import R, V, and_, db\nfb = \[ ${Statement}\] \nds = db() \nresult = ds(fb) \nprint(result.df()) ]]
-Statement_fact [clause kperiod] = [[${clause},\n]]
-Statement_rule [clause1 kcolondash clause @commaclause kdot] = [[${clause1} &lt;&lt; and_(${clause}${commaclause}),\n]]
-
-Clause [predicate klpar idlist krpar] = [[${predicate}(${idlist})]]
-
-CommaClause [kcomma clause] = [[\,${clause}]]
-
-Relation [lowercaseident] = [[R.${lowercaseident}]]
-IDList [id @commaid] = [[${id}${commaid}]]
-
-ID [id] = [[${id}]]
-CommaID [kcomma id] = [[\, ${id}]]
-
-Variable [capident] = [[V.${capident}]]
-Literal [lowercaseident] = [["${lowercaseident}"]]
-
-LowerCaseIdent [c @cs] = [[${c}${cs}]]
-
-CapitalizedIdent [c @cs] = [[${c}${cs}]]
-
-identRest [c] = [[${c}]]</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Program [<span class="op">@</span>Statement] <span class="op">=</span> [[<span class="im">from</span> mercylog <span class="im">import</span> R, V, and_, db\nfb <span class="op">=</span> \[ ${Statement}\] \nds <span class="op">=</span> db() \nresult <span class="op">=</span> ds(fb) \nprint(result.df()) ]]</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>Statement_fact [clause kperiod] <span class="op">=</span> [[${clause},\n]]</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>Statement_rule [clause1 kcolondash clause <span class="op">@</span>commaclause kdot] <span class="op">=</span> [[${clause1} <span class="op">&lt;&lt;</span> and_(${clause}${commaclause}),\n]]</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>Clause [predicate klpar idlist krpar] <span class="op">=</span> [[${predicate}(${idlist})]]</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>CommaClause [kcomma clause] <span class="op">=</span> [[\,${clause}]]</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>Relation [lowercaseident] <span class="op">=</span> [[R.${lowercaseident}]]</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>IDList [<span class="bu">id</span> <span class="op">@</span>commaid] <span class="op">=</span> [[${<span class="bu">id</span>}${commaid}]]</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>ID [<span class="bu">id</span>] <span class="op">=</span> [[${<span class="bu">id</span>}]]</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>CommaID [kcomma <span class="bu">id</span>] <span class="op">=</span> [[\, ${<span class="bu">id</span>}]]</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>Variable [capident] <span class="op">=</span> [[V.${capident}]]</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>Literal [lowercaseident] <span class="op">=</span> [[<span class="st">"$</span><span class="sc">{lowercaseident}</span><span class="st">"</span>]]</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>LowerCaseIdent [c <span class="op">@</span>cs] <span class="op">=</span> [[${c}${cs}]]</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>CapitalizedIdent [c <span class="op">@</span>cs] <span class="op">=</span> [[${c}${cs}]]</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>identRest [c] <span class="op">=</span> [[${c}]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="code-generation" class="level2">
 <h2 class="anchored" data-anchor-id="code-generation">Code Generation</h2>
 <p>So we have the Ohm and Glue grammars. We can now take a Datalog program and generate Python code. Using the <code>pfr</code> tool in the repo <a href="https://github.com/guitarvydas/parse">parse</a> tool which reads an Ohm, Glue file and input source language file, we can generate the Python code.</p>
-<pre class="shell"><code>pfr test.datalog datalog.ohm mercylog.glue &gt; test.py 
-</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>pfr test.datalog datalog.ohm mercylog.glue <span class="op">&gt;</span> test.py </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>NOTE: I had to hack the code above a bit to make it work for me but Paul may have updated his repo to make it work seamlessly for all. The emphasis here is not on having production ready tools but to rapidly explore ideas in DSL building and get feedback.</p>
 <p>That generates</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mercylog <span class="im">import</span> R, V, and_, db</span>
@@ -474,13 +476,12 @@ identRest [c] = [[${c}]]</code></pre>
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.df()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Not that it’s not indented properly, nor have I done any optimizations. For e.g.&nbsp;<code>V.X</code> could be refactored to <code>X=V.X</code> like in the Python code showed in the very beginning. But that’s another exercise.</p>
 <p>Now to test my code, I have to create a project with <code>mercylog</code> in my dependencies and then do</p>
-<pre class="shell"><code>python test.py
-</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>python test.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>and I’ll see</p>
-<pre class="shell"><code>      Y    X
-0  connor  bob
-1     bob  abe
-2    carl  bob</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>      Y    X</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>  connor  bob</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>     bob  abe</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>    carl  bob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="the-end" class="level1">
