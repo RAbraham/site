@@ -15,45 +15,20 @@ toc: true
 This post shows you how to create a toy Datalog, a laughably incomplete subset of the Datalog language, using an Ohm parser for the syntax and a Glue parser for the semantics. The final output is a Python program.
 
 # Motivation
-I think the time has come for me 
-to explore creating [domain 
-specific languages](https://en.wikipedia.org/wiki/Domain-specific_language)(DSL) to build software systems. I feel the benefits are:
-* **write less code**. I hope to generate the required code from the DSL code.
-* **write code readable by domain experts**. I hope to write executable code in that DSL that looks very similar to what an end user/domain expert would understand. Almost like writing English with some structure so that it can be executed. This enables fruitful and rapid interaction with domain experts/end users very early in the project preventing miscommunication errors.
-* **decouple business logic from implementation**. I hope to capture the business
-rules/business workflows at the
-level of the DSLs. This will
-allow me to easily change the
-implementation underneath
-without having to change the  DSL
- code that captures the  complex
- business logic.  For e.g. I
- might initially generate simple
- Python code from my DSL but
- later I may generate performant
- code using multiprocessing
- libraries or even SQL code, all
- without changing my code written
-  in the DSL. I just change the
-  compiler.
+I think the time has come for me to explore creating [domain specific languages](https://en.wikipedia.org/wiki/Domain-specific_language)(DSL) to build software systems. I feel the benefits are:
+
+  * **write less code**: I hope to generate the required code from the DSL code.
+  * **write code readable by domain experts**. I hope to write executable code in that DSL that looks very similar to what an end user/domain expert would understand. Almost like writing English with some structure so that it can be executed. This enables fruitful and rapid interaction with domain experts/end users very early in the project preventing miscommunication errors.  
+  * **decouple business logic from implementation**. I hope to capture the business rules/business workflows at the level of the DSLs. This will allow me to easily change the implementation underneath without having to change the  DSL code that captures the  complex business logic.  For e.g. I might initially generate simple Python code from my DSL but later I may generate performant code using multiprocessing libraries or even SQL code, all without changing my code written in the DSL. I just change the compiler.
 
 
-I hope to write a bigger post
-later explaining why I think DSLs
- are something worth exploring
- (ask me if you are interested.)
+I hope to write a bigger post later explaining why I think DSLs are something worth exploring (ask me if you are interested.)
 
 # Problem Statement
-I have a library in Python, 
-called [mercylog](https://github
-.com/RAbraham/mercylog) that is like Datalog. In this
-post, I want to take actual 
-Datalog code and compile it to 
-Python code which has `mercylog` 
-statements. Let's go further into 
-what that means.
+I have a library in Python, called [mercylog](https://github .com/RAbraham/mercylog) that is like Datalog. In this post, I want to take actual Datalog code and compile it to Python code which has `mercylog` statements. Let's go further into what that means.
 
 I'm first going to show how to express the example in SQL as all of us are familiar with it. Imagine a database with tables `parent`, `man` and `woman`.
+
 ```sql
 
 CREATE TABLE parent (
@@ -99,19 +74,11 @@ bob   connor
 abe   bob  
 ```
 
-Now, I really like a language
-called [Datalog](https://en
-.wikipedia.org/wiki/Datalog). I
-have written an outdated but
-still understandable post here
-(raj: I'll post a link soon). It's an
-alternative to SQL. I even wrote
-a prototype Python library named
-[mercylog](https://github
-.com/RAbraham/mercylog) to be able to execute Datalog like programs in Python.
+Now, I really like a language called [Datalog](https://en .wikipedia.org/wiki/Datalog). I have written an outdated but still understandable post here (raj: I'll post a link soon). It's an alternative to SQL. I even wrote a prototype Python library named [mercylog](https://github .com/RAbraham/mercylog) to be able to execute Datalog like programs in Python.
 
 Let's translate the above SQL to a simple variant of Datalog. 
-```
+
+```python
 parent(abe, bob).
 parent(abby, bob).
 parent(bob, carl).
@@ -226,7 +193,7 @@ Alright, time to dive in. We build the grammar for our toy Datalog. Ohm has
 
 Let's start with the smallest Ohm grammar
 
-```shell
+```python
 datalog {
  Program = Statement+
 }
@@ -244,7 +211,7 @@ I see a sub pattern there as `relation
 call this a 
 `Clause` and then I'll worry later how to parse it. So the rule becomes `Clause :- Clause, Clause.` or even `Clause :- Clause, Clause, Clause..`. We have to capture the pattern `, Clause` 0 or many times. The way we do it in Ohm is like this.
 
-```shell
+```python
 Statement =
     Clause "."                          -- fact
   | Clause ":-" Clause CommaClause* "." -- rule
@@ -256,7 +223,7 @@ CommaClause = "," Clause
 
 Cool, what's a Clause? It's like `relation(Variable1, Variable2,..,VariableN)`. I'm going to worry about the 'variable' number of variables later. For now, I'll call it 
 
-```shell
+```python
 Clause = Relation "(" IDList ")"
 ```
 
@@ -268,7 +235,7 @@ need to capture single letter
 relations e.g `a` in `a(X,Y)` or 
 bigger relations e.g. `father`
 
-```shell
+```python
 Relation = LowerCaseIdent
 LowerCaseIdent = "a" .. "z" identRest*
 identRest = "0-9" | "_" | "A" .. "Z" | "a" .. "z"
@@ -283,7 +250,7 @@ Now, `IDList`. You'll notice a trend here with CommaClause and IDList. It has th
 
 `IDList` has the same feel like `Clause`, doesn't it?
 
-```shell
+```python
 IDList = ID CommaID*
 CommaID = "," ID
 ```
@@ -296,7 +263,7 @@ like `X` and `Y` in `father(X, Y)
 variable starts with a capital 
 letter as per Datalog convention.
 
-```shell
+```python
 
 ID = Variable | Literal
 Variable = CapitalizedIdent
@@ -310,7 +277,7 @@ So there you go, I think that's
 it. Let's see the whole ohm 
 grammar file.
 
-```shell
+```python
 datalog {
 Program = Statement+
 Statement =
@@ -363,7 +330,7 @@ way that you can just write the
 string of code(Python in my case)
 that you want to generate. Let's 
 start with a dummy example.
-```shell
+```python
 Program [@Statement] = [[ ${Statement} ]]
 ```
 Here, `Program` and `Statement` 
@@ -394,7 +361,7 @@ statements and initialization no
 matter what the Datalog code is 
 to be generated.
 
-```shell
+```python
 
 from mercylog import R, V, and_, db
 fb = [ .. statements ..] # refer to facts_rules_query above 
@@ -405,7 +372,7 @@ print(result.df())
 
 The way we specify that in Glue 
 is:
-```shell
+```python
 Program [@Statement] = [[from mercylog import R, V, and_, db\nfb = \[ ${Statement}\] \nds = db() \nresult = ds(fb) \nprint(result.df()) ]]
 ```
 It may not look very clean and
@@ -424,7 +391,7 @@ didn't mention before, that it's
 time to talk about now. Notice 
 the `-- rule` and `-- fact` in 
 our Ohm grammar? 
-```shell
+```python
 Statement =
     Clause "."                          -- fact
   | Clause ":-" Clause CommaClause* "." -- rule
@@ -460,7 +427,7 @@ For rules, I have to convert
 corresponding `mercylog 
 statement` i.e. `clause1 << and_(...)`
 
-```shell
+```python
 Statement_fact [clause kperiod] = [[${clause},\n]]
 Statement_rule [clause1 kcolondash clause @commaclause kdot] = [[${clause1} << and_(${clause}${commaclause}),\n]]
 
@@ -471,7 +438,7 @@ explained above.
 
 Here's the final Glue Code.
 
-```shell
+```python
 Program [@Statement] = [[from mercylog import R, V, and_, db\nfb = \[ ${Statement}\] \nds = db() \nresult = ds(fb) \nprint(result.df()) ]]
 Statement_fact [clause kperiod] = [[${clause},\n]]
 Statement_rule [clause1 kcolondash clause @commaclause kdot] = [[${clause1} << and_(${clause}${commaclause}),\n]]
@@ -506,7 +473,7 @@ which reads an Ohm, Glue file
 and input source language file,
 we can generate the Python code. 
 
-```shell
+```python
 pfr test.datalog datalog.ohm mercylog.glue > test.py 
 
 ```
@@ -544,13 +511,13 @@ that's another exercise.
 Now to test my code, I have to 
 create a project with `mercylog` 
 in my dependencies and then do 
-```shell
+```python
 python test.py
 
 ```
 and I'll see
 
-```shell
+```python
       Y    X
 0  connor  bob
 1     bob  abe
